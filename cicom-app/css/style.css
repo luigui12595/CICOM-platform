@@ -1,0 +1,173 @@
+html{
+  font-size: 14px;
+}
+body{
+  font-family: 'Montserrat', sans-serif;
+}
+
+.sideNav{
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:100;
+    height:100%;
+    width: 20%;
+    background-color:#283E56;
+    color:#FFFFFF;
+    box-shadow: 1px 1px 1px 1.5px rgba(0,0,0,0.3);
+    border-radius: 2px;
+}
+
+.views{
+    margin-left: 21%;
+}
+
+.sideNavTitle{
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.titleContainer{
+    padding: 9% 6% ;
+    background: #1989AC;
+    box-shadow: 1px 1px 1px 1.5px rgba(0,0,0,0.3);
+}
+
+.titleContainer i, .titleContainer h3{
+    float: left;
+    margin: 0 1.5%;
+}
+
+.titleContainer::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.fa.fa-universal-access{
+    color:#FFDE25;
+    font-size: 1.5rem;
+}
+
+.sideNav ul{
+    padding: 9% 0;
+}
+
+.sideNav ul li{
+    padding: 12.5% 2% 12.5% 10%;
+}
+
+.actionList li:hover{
+    background:#3f5976;
+    color:#FFDE25;
+}
+
+.sideNav ul li i, .sideNav ul li p{
+    float: left;
+}
+
+.sideNav ul li p{
+    margin-left: 1.7%;
+}
+
+.sideNav ul li::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.active {
+    background:#3f5976;
+    color:#FFDE25;
+}
+
+.login{
+    background-color:#283E56;
+    height: 100%;
+    width: 100%;
+    position:fixed;
+    
+}
+
+form.loginForm{
+    width: 40%;
+    margin: 7.5% auto;
+    border: 1px groove rgb(255, 255, 255);
+    border-radius: 3px;
+    color: #FFF;
+    padding: 2.5% 6%;
+}
+
+.sideNavTitle.loginTitle{
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.4;
+    display:inline;
+}
+
+.loginTitleContainer{
+    text-align: center;
+}
+
+.inputsContainer{
+    margin: 10% 0;
+}
+
+.inputsContainer label{
+    display: block;
+    
+}
+
+.inputsContainer input{
+    width: 100%;
+    margin: 3.5% 0%;
+    border: none;
+    border-bottom: 1px groove #FFF;
+    background: transparent;
+}
+
+.inputsContainer input:focus{
+    border-bottom: 1px groove #FFDE25;
+}
+
+.submitButton{
+    padding: 1.75% 10%;
+    color: #FFF;
+    background: transparent;
+    font-weight: 500;
+}
+
+.submitButton:hover{
+    color: #000000;
+    background-color: #FFDE25;
+    cursor:pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+#logoutButton{
+    margin: 70% 25%;
+    padding: 2.5% 12%;
+    color:black;
+}
+
+.newsTable{
+    margin:5% 5%;
+}
+
+.newsTable thead{
+    background-color:#283E56;
+    color:#FFDE25;
+}
+
+#downloadButton{
+    margin: 2% 0;
+}

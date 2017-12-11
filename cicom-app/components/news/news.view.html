@@ -1,0 +1,33 @@
+
+<div ng-include src="'sidenav.html'" ng-controller="SideNavController as sidenav">
+</div>
+<div class="views" id="myApp">
+    <div class="newsTable" ng-hide="news.selectedNews">
+        <button class="btn btn-success" id="downloadButton" type="button" ng-csv="news.newsArray" filename="Noticias.csv">CSV</button>
+       <table st-table="vm.newsArray" st-safe-src="vm.rowCollection" class="table table-striped table-hover table-bordered table-responsive" >
+            <thead class="thead-dark">
+                <tr>
+                    <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+                </tr>
+                <tr class="firsts-th">
+                    <th st-sort="Titulo" scope="col">Título</th>
+                    <th st-sort="Medio" scope="col">Medio</th>
+                    <th scope="col">Fecha de Publicación</th>
+                    <th scope="col">Género</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="n in news.newsArray" ng-click="news.selectNews()">
+                    <th >{{n.Titulo}}</th>
+                    <td >{{n.Medio}}</td>
+                    <td >{{n.Fecha}}</td>
+                    <td >{{n.Genero}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="newsForm" ng-show="news.selectedNews">
+            <button class="btn btn-success" id="returnButton" ng-click="news.return()">CSV</button>
+            
+    </div>  
+</div>

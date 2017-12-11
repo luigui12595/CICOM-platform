@@ -1,0 +1,25 @@
+<div class="sideNav">
+    <div class="titleContainer">
+        <i class="fa fa-universal-access" aria-hidden="true"></i>
+        <h3 class="sideNavTitle">cms cicom</h3>
+    </div>
+    <ul class="actionList">
+        <li class="barButton" id="news" ng-class="sidenav.setActive(0)" ng-click="sidenav.getOut(0)">
+            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            <p class="titleItem">Noticias</p>
+        </li>
+        <li class="barButton" id="candidates" ng-class="sidenav.setActive(1)" ng-click="sidenav.getOut(1)">
+            <i class="fa fa-handshake-o" aria-hidden="true"></i>
+            <p class="titleItem">Candidatos Presidenciales</p>
+        </li>
+        <li class="barButton" id="categories" ng-class="sidenav.setActive(2)" ng-click="sidenav.getOut(2)">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <p class="titleItem">Temas y Categorías</p>
+        </li>
+    </ul>
+
+    <button id="logoutButton" ng-click="sidenav.logout()">
+        <p class="titleItem">Logout</p>
+    </button>
+    <i class="fa fa-window-close" aria-hidden="true"></i>
+</div>
