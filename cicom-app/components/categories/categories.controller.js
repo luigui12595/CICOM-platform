@@ -69,10 +69,17 @@
       };
     }
   
-    function CategoriesController($http, $cookies, $location, $scope) {
+    function CategoriesController($http, $cookies, $location) {
       var vm = this;
-      vm.mensaje = "Hola";
-  
+      vm.server = 'http://localhost:8081';
+      vm.headers = {
+                      'Content-Type':'application/json',
+                      'Accept':'application/json'
+                    }
+      vm.newsArray;
+      vm.framingArray;
+      vm.framingSelected;
+      vm.newsSelected;
       function init(){ // función que se llama así misma para indicar que sea lo primero que se ejecute
         var myEl = angular.element( document.querySelector( '#news' ) );
         myEl.removeClass('active')
@@ -80,20 +87,16 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.addClass('active')
-        
+        $http.get(vm.server+'/Media/news')
+        .then(function(response, headers){
+          vm.newsArray = response.data.data;
+        })
+        $http.get(vm.server+'/subjects/getSubjects')
+        .then(function(response, headers){
+          vm.framingArray = response.data.data;
+        })
       }init();
-  
-      vm.print = function(){
-        vm.mensaje = "Hola fui exitoso";
-        console.log(vm.mensaje);
-      };
-  
-      vm.logout = function(){
-        //$cookies.remove('currentUserActive');
-        //console.log($cookies.get('currentUserActive'));
-        //vm.loginCorrect = false;
-        //$location.path('/login');
-      }
+
       function cloneObject(object){
         var clone = {};
         for(var key in object){

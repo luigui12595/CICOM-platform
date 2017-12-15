@@ -6,6 +6,7 @@
         'ngCookies',
         'ngMessages',
         'ngSanitize',
-        'ngCsv'
+        'ngCsv',
+        'angularUtils.directives.dirPagination'
     ]);
 })();

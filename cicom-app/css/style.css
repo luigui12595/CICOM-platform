@@ -17,9 +17,9 @@ body{
     box-shadow: 1px 1px 1px 1.5px rgba(0,0,0,0.3);
     border-radius: 2px;
 }
-
+.categoryView,
 .views{
-    margin-left: 21%;
+    margin-left: 20.1%;
 }
 
 .sideNavTitle{
@@ -156,18 +156,206 @@ button:focus {
 #logoutButton{
     margin: 70% 25%;
     padding: 2.5% 12%;
-    color:black;
+    
 }
 
-.newsTable{
+.newsTable, .newsForm{
     margin:5% 5%;
 }
 
-.newsTable thead{
+.newsTable .header{
     background-color:#283E56;
-    color:#FFDE25;
+    color:#FFDE25; 
+    cursor:pointer; 
+    
 }
 
 #downloadButton{
-    margin: 2% 0;
+    float:right;
+    margin-top:2.5%;
 }
+
+
+a.disabled, a.disabled span {
+    color:#FFDE25;
+}
+
+.firstCol{
+    float:left;
+    border:none;
+    width: 40%;
+    margin: 2% 5% 7.5% 2.5%;
+    display: block;
+    padding:0%;
+}
+
+.entryCheckbox{
+    margin-top:5%;
+}
+
+.entry textarea, 
+.entry input, 
+.entry select{
+    position: relative; 
+    height: 100%;
+    width:100%;
+    border: none;
+    border-radius: 2px;
+    background: transparent;
+    resize: none;
+    -moz-box-shadow:    1px 1px 3px 4px #ccc;
+    -webkit-box-shadow: 1px 1px 3px 4px #ccc;
+    box-shadow:         1px 1px 3px 4px #ccc;   
+}
+
+.entry textarea:focus, 
+.entry input:focus,
+.entry select:focus{
+    border-right: 2px groove #FFDE25;
+    border-bottom: 2px groove #FFDE25;
+}
+
+.entry h2{
+    margin-top: 5%;
+    margin-bottom:1%;
+    font-size: 16px;
+    font-weight: 600;
+}
+.secondCol{
+    float:left;
+    width: 40%;
+    margin:  2% 2.5% 7.5% 5%;
+    display: block;
+}
+
+.entryDivision{
+    width:30%;
+    display: inline-block;
+    margin:8%;
+}
+
+
+.square {
+    float:left;
+    position: relative;
+    width: 30%;
+    padding-bottom : 20%; /* = width for a 1:1 aspect ratio */
+    margin:1%;
+    background: transparent;
+    overflow:hidden;
+}
+
+.content {
+    position:absolute;
+    height:100%; /* = 100% - 2*5% padding */
+    width:100%; /* = 100% - 2*5% padding */
+    padding: 5%;
+    
+}
+.table{
+    display:table;
+    width:100%;
+    height:100%;
+}
+
+.table-cell{
+    display:inline;
+    vertical-align:middle;
+}
+
+.iconImage{
+    height:1.5rem;
+    width:1.5rem;
+    display:inline;
+}
+
+.iconImage#iconSad{
+    height:1.85rem;
+    width:1.85rem;
+}
+
+#numberCount{
+    display:inline;
+    height:2rem;
+    width:4rem;
+}
+
+.newsForm .controllerButtons{
+    margin:  2% 40% 7.5% 40%;
+    display:inline-block;
+}
+
+.newsSearch{
+    display:inline-block;
+    width:100%;
+    margin: 2.5% auto
+}
+
+.newsSearch select{
+    display:inline;
+    width:20%;
+}
+
+.newsSearch h2{
+    display:inline;
+    width:5%;
+}
+
+.titlePage{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.linkButtons{
+    margin:  0% 40%;
+    display:inline-block;
+}
+
+.categoryPanel{
+    float:left;
+    width: 80%;
+    display: block;
+    margin: 2.5% 10%;
+    padding:2%;
+    background-color: rgba(25, 137, 172, 0.09);
+    box-shadow: 1px 1px 1px 1.5px rgba(0,0,0,0.3);
+    height: 100%;
+}
+
+.framingList select{
+    float: left;
+    margin: 5% 10%;
+    height:70%;
+    width:25%;
+    position: relative;
+    border-radius: 3px;
+}
+
+.crudFraming{
+    float: left;
+    margin: 5% 10%;
+    height:70%;
+    width:25%;
+    position: relative;
+    border-radius: 3px;
+    display:block;
+}
+
+.crudButtons{
+    margin-top: 5%;
+    display:inline-block;  
+}
+
+.crudButtons i{
+    display: inline-block;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #888;
+    padding: 0.5em 0.6em;
+}
+
+
+
+
+
+
+

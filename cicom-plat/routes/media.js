@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Media = require('../models/media.model.js');
+fs = require('fs');
 
 router.get('/getMedia/:mediaId?',function(req,res,next){
   if(req.params.mediaId){
@@ -50,6 +51,17 @@ router.put('/updateMedia/',function(req,res,next){
     }
   });
 });
+
+router.get('/news', function (req, res) {
+  fs.readFile('/Users/luiscampos/Documents/Investigacion-CICOM/CICOM-platform/cicom-plat/routes/news.json', 'utf8', function (err,data) {
+      if (err) {
+          return console.log(err);
+      }
+      console.log(data);
+      res.send(data)
+  });
+
+})
 
 
 module.exports = router;

@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+fs = require('fs');
 
 var routes = require('./routes/index.js');
 var users = require('./routes/users.js');
@@ -55,6 +56,8 @@ app.use(function(req, res, next) {
 
 
 
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -65,5 +68,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

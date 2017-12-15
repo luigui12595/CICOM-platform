@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "angular": "^1.6.7",
     "angular-data-table": "^0.7.0",
+    "angular-datetime-input": "^5.2.1",
     "btoa": "^1.1.2",
     "install": "^0.10.2",
     "ng-csv": "^0.3.6",

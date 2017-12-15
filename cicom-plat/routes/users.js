@@ -103,7 +103,7 @@ router.post('/login',function(req,res,next){
             res.json({"state":{"stateMessage":"ERROR_WRONG_PASSWORD","code":2002},"data":err});
           }
         }else{
-          res.json({"stateMessage":"ERROR_WRONG_EMAIL", "code":2003});
+          res.json({"state":{"stateMessage":"ERROR_WITH_CREDENTIALS","code":2003},"data":err});
         }
       }
    });
