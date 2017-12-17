@@ -16,6 +16,10 @@ var Subject={
 
     updateSubject:function(Subject,callback){
         return db.query("UPDATE subject SET name = ? WHERE subject_id=?",[Subject.name, Subject.subjectId],callback);
+    },
+
+    deleteSubject:function(Subject,callback){
+        return db.query("DELETE FROM subject WHERE subject_id=?",[Subject.subject_id],callback);
     }
 
 };

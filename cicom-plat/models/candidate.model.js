@@ -16,6 +16,10 @@ var Candidate={
 
     updateCandidate:function(Candidate,callback){
         return db.query("UPDATE candidate SET name = ? WHERE candidate_id=?",[Candidate.name, Candidate.candidateId],callback);
+    },
+
+    deleteCandidate:function(Candidate,callback){
+        return db.query("DELETE FROM candidate WHERE candidate_id=?",[Candidate.candidateId],callback);
     }
 
 };

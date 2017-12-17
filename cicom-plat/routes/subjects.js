@@ -51,5 +51,15 @@ router.put('/updateSubject/',function(req,res,next){
   });
 });
 
+router.post('/deleteSubject/',function(req,res,next){  
+  Subject.deleteSubject(req.body,function(err,count){ 
+    if(err){
+      res.json({"state":{"stateMessage":"ERROR_SUBJECT_DELETE_ERROR","code":2004},"data":err});
+    }else{
+      res.json({"state":{"stateMessage":"SUCCESS_SUBJECTS_DELETED","code":1004},"result":count});
+    }
+  });
+});
+
 
 module.exports = router;

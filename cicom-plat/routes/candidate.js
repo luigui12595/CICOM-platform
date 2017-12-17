@@ -41,12 +41,23 @@ router.post('/createCandidate/',function(req,res,next){
     });
 });
 
+router.post('/deleteCandidate/',function(req,res,next){
+  Candidate.deleteCandidate(req.body,function(err,count,results){
+      if(err){
+      console.log(err);
+      res.json({"state":{"stateMessage":"ERROR_CANDIDATE_NO_DELETED","code":2003},"data":err});
+      }else{
+      res.json({"state":{"stateMessage":"SUCCESS_CANDIDATE_DELETED","code":1003}, "result":count});
+      }
+  });
+});
+
 router.put('/updateCandidate/',function(req,res,next){  
   Candidate.updateCandidate(req.body,function(err,count){ 
     if(err){
-      res.json({"state":{"stateMessage":"ERROR_CANDIDATE_UPDATE_ERROR","code":2003},"data":err});
+      res.json({"state":{"stateMessage":"ERROR_CANDIDATE_UPDATE_ERROR","code":2004},"data":err});
     }else{
-      res.json({"state":{"stateMessage":"SUCCESS_CANDIDATES_FOUND","code":1000},"result":count});
+      res.json({"state":{"stateMessage":"SUCCESS_CANDIDATES_FOUND","code":1004},"result":count});
     }
   });
 });
