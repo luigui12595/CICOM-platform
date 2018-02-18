@@ -7,6 +7,7 @@
 * Quick summary 
 
 	This repository is for CICOM-platform project, using NodeJS, Express and MYSQL.
+	You must have node, express and mysql already installed.
 
 * Version 
 1.0.0
