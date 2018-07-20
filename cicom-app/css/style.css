@@ -2,7 +2,7 @@ html{
   font-size: 14px;
 }
 body{
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Source Sans Pro', 'Montserrat', sans-serif;
 }
 
 .sideNav{
@@ -167,7 +167,6 @@ button:focus {
     background-color:#283E56;
     color:#FFDE25; 
     cursor:pointer; 
-    
 }
 
 #downloadButton{
@@ -234,6 +233,12 @@ a.disabled, a.disabled span {
     margin:8%;
 }
 
+.entryEngDivision{
+    width:20%;
+    display: inline-block;
+    margin:8%;
+}
+
 
 .square {
     float:left;
@@ -285,6 +290,19 @@ a.disabled, a.disabled span {
     display:inline-block;
 }
 
+.newsForm .postComments{
+    margin: 0px 0px 0px 25px;
+    width: 90%;
+    height: 100%;
+}
+
+.postComments h2{
+    margin-top: 5%;
+    margin-bottom:1%;
+    font-size: 16px;
+    font-weight: 600;
+}
+
 .newsSearch{
     display:inline-block;
     width:100%;
@@ -296,9 +314,15 @@ a.disabled, a.disabled span {
     width:20%;
 }
 
+.borderbox{
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.178);
+}
+
 .newsSearch h2{
     display:inline;
     width:5%;
+    padding: 0% 1.5%;
 }
 
 .titlePage{

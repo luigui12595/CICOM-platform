@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS cicom.media
 (
   media_id integer auto_increment,
   name varchar(100),
+  facebook_name varchar(100),
   PRIMARY KEY (media_id)
 );
 
