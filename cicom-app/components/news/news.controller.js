@@ -83,6 +83,7 @@
     vm.sinceDate;
     vm.untilDate;
     vm.keysArray;
+    vm.commentKeysArray;
     vm.newsCreationDate;
     vm.newsUpdateDate;
     var headers =
@@ -96,11 +97,33 @@
       vm.selectedNews = true;
       vm.newsCreationDate = new Date(vm.news.created_time);
       vm.newsUpdateDate = new Date(vm.news.updated_time);
+      var url_req = vm.mongoServer+'/getComments/'+vm.news._id;
+      var config = {
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+      }
+      $http.get(url_req,config)
+      .then(function(response, headers){
+        vm.news.commentArray = response.data.results;
+        vm.commentKeysArray = Object.keys(vm.news.commentArray[0]);
+      })
     };
     vm.saveNews = function(){
-      vm.news.FechaTS = (vm.news.FechaTS).toISOString();
       vm.newsArray[vm.newsIndex] = vm.news ;
-      vm.selectedNews = false;
+      var url_req = vm.mongoServer+'/updatePost';
+      $http({method:'PUT', 'url':url_req, 'headers': headers, 'data':vm.news}).then(function(response){
+        var results = response.data;
+        if(results.code == 1000){
+          alert('Post actualizado exitosamente')
+          vm.selectedNews = false;
+        }else{
+          alert('Post no tuvo cambios')
+          vm.selectedNews = false;
+        }
+      })
+      
     };
     vm.return = function(){
       vm.selectedNews = false;
@@ -143,7 +166,11 @@
         $http.get(url_req,config)
         .then(function(response, headers){
           vm.newsArray = response.data.results;
-          vm.keysArray = Object.keys(vm.newsArray[0]);
+          if(vm.newsArray.length > 0){
+            vm.keysArray = Object.keys(vm.newsArray[0]);
+          }else{
+            alert('No se encontraron posts del medio buscado en las fechas requeridas');
+          }
         })
       } 
     }
@@ -151,7 +178,7 @@
     vm.sortType     = 'created_time'; // set the default sort type
     vm.sortReverse  = false;  // set the default sort order
     vm.searchNews   = '';  //Filter news
-    vm.commentSortType = '';
+    vm.commentSortType = 'like_count';
     vm.commentSortReverse = false;
     vm.searchComments = '';
     vm.media;

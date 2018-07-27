@@ -54,10 +54,10 @@
                         </p>
                     </td>
                     <td>
-                        <p class="disabled"  ng-click="news.sortType = 'type'; news.sortReverse = !news.sortReverse">
-                            Tipo
-                            <span ng-show="news.sortType == 'type' && !news.sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="news.sortType == 'type' && news.sortReverse" class="fa fa-caret-up"></span>
+                        <p class="disabled"  ng-click="news.sortType = 'engagement'; news.sortReverse = !news.sortReverse">
+                            Engagement
+                            <span ng-show="news.sortType == 'engagement' && !news.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="news.sortType == 'engagement' && news.sortReverse" class="fa fa-caret-up"></span>
                         </p>
                     </td>
                 </tr>
@@ -67,7 +67,7 @@
                     <th >{{n.name}}</th>
                     <td >{{n.from}}</td>
                     <td >{{n.created_time|date:'medium'}}</td>
-                    <td >{{n.type}}</td>
+                    <td >{{n.engagement}}</td>
                 </tr>
             </tbody>
         </table>
@@ -85,7 +85,7 @@
         <div class="firstCol">
             <div class="entry">
                 <h2 class="newsTitle">Título</h2><br/>
-                <textarea class="form-control" rows='3' contenteditable='true' ng-model="news.news.name" readonly></textarea>
+                <textarea class="form-control" rows='3' contenteditable='true' ng-model="news.news.name"></textarea>
             </div>
             <div class="entry">
                 <h2 class="newsTitle">Fecha de Publicación</h2><br/>
@@ -117,7 +117,7 @@
             <div class="entry">
                 <div class="entryDivision">
                     <h2>Formato</h2><br/>
-                    <select name="singleSelect" ng-model="news.news.format">
+                    <select name="singleSelect" ng-model="news.news.type">
                         <option value="">-- seleccionar formato --</option>
                         <option value="link">Link</option>
                         <option value="photo">Foto</option>
@@ -128,8 +128,8 @@
                         <h2 class="newsTitle">Interés</h2><br/>
                         <select name="singleSelect" ng-model="news.news.public">
                             <option value="">-- seleccionar interés --</option>
-                            <option value="true">Público</option>
-                            <option value="false">No Público</option>
+                            <option value="Público">Público</option>
+                            <option value="No Público">No Público</option>
                         </select>
                 </div>
             </div>
@@ -183,8 +183,7 @@
                         <input id="numberCount" type="number" ng-model="news.news.engagement" />
                     </div>
             </div>
-        </div> 
-        
+        </div>
         <div class="postComments">
             <h2 class="newsTitle">Comentarios</h2>
             <table class="table table-striped table-hover table-bordered table-responsive" >
@@ -205,17 +204,17 @@
                     </tr>
                     <tr class="firsts-th">
                         <td>
-                            <p class="disabled" ng-click="news.commentSortType = 'name'; news.commentSortReverse = !news.commentSortReverse">
+                            <p class="disabled" ng-click="news.commentSortType = 'message'; news.commentSortReverse = !news.commentSortReverse">
                                 Comentario 
-                                <span ng-show="news.commentSortType == 'name' && !news.sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="news.commentSortType == 'name' && news.sortReverse" class="fa fa-caret-up"></span>
+                                <span ng-show="news.commentSortType == 'message' && !news.sortReverse" class="fa fa-caret-down"></span>
+                                <span ng-show="news.commentSortType == 'message' && news.sortReverse" class="fa fa-caret-up"></span>
                             <p>
                         </td>
                         <td>
-                            <p class="disabled" ng-click="news.commentSortType = 'from'; news.commentSortReverse = !news.commentSortReverse">
-                                Medio
-                                <span ng-show="news.commentSortType == 'from' && !news.commentSortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="news.commentSortType == 'from' && news.commentSortReverse" class="fa fa-caret-up"></span>
+                            <p class="disabled" ng-click="news.commentSortType = 'like_count'; news.commentSortReverse = !news.commentSortReverse">
+                                Likes
+                                <span ng-show="news.commentSortType == 'like_count' && !news.commentSortReverse" class="fa fa-caret-down"></span>
+                                <span ng-show="news.commentSortType == 'like_count' && news.commentSortReverse" class="fa fa-caret-up"></span>
                             </p>
                         </td>
                         <td>
@@ -226,20 +225,20 @@
                             </p>
                         </td>
                         <td>
-                            <p class="disabled"  ng-click="news.commentSortType = 'type'; news.commentSortReverse = !news.commentSortReverse">
-                                Tipo
-                                <span ng-show="news.commentSortType == 'type' && !news.commentSortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="news.commentSortType == 'type' && news.commentSortReverse" class="fa fa-caret-up"></span>
+                            <p class="disabled"  ng-click="news.commentSortType = 'comment_count'; news.commentSortReverse = !news.commentSortReverse">
+                                Comentarios de Respuesta
+                                <span ng-show="news.commentSortType == 'comment_count' && !news.commentSortReverse" class="fa fa-caret-down"></span>
+                                <span ng-show="news.commentSortType == 'comment_count' && news.commentSortReverse" class="fa fa-caret-up"></span>
                             </p>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr dir-paginate="n in news.news.comments | orderBy:news.commentSortType:news.commentSortReverse| filter:news.searchComments| itemsPerPage:5">
-                        <th >{{n.name}}</th>
-                        <td >{{n.from}}</td>
+                    <tr dir-paginate="n in news.news.commentArray | orderBy:news.commentSortType:news.commentSortReverse| filter:news.searchComments| itemsPerPage:5">
+                        <th >{{n.message}}</th>
+                        <td >{{n.like_count}}</td>
                         <td >{{n.created_time|date:'medium'}}</td>
-                        <td >{{n.type}}</td>
+                        <td >{{n.comment_count}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -248,8 +247,8 @@
             direction-links="true"
             boundary-links="true" >
             </dir-pagination-controls>
-            <!-- <button class="btn btn-success" id="downloadButton" type="button" ng-csv="news.news.comments" csv-header="news.keysArray" filename="CommentPost.csv" >CSV</button> -->                                   
-        </div>   
+            <button class="btn btn-success" id="downloadButton" type="button" ng-csv="news.news.commentArray" csv-header="news.commentKeysArray" filename="CommentPost.csv" >CSV</button>                                
+        </div>  
         <div class="controllerButtons">
             <button class="btn btn-warning" id="returnButton" ng-click="news.return()">Cancelar</button>
             <button class="btn btn-success" id="saveButton" ng-click="news.saveNews()">Guardar</button>
