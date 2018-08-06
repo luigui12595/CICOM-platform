@@ -34,6 +34,8 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.removeClass('active')
         $location.path('/news');
       } else if(index == 1){
         var myEl = angular.element( document.querySelector( '#news' ) );
@@ -41,6 +43,8 @@
         myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.addClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         $location.path('/candidates');
       } else if(index == 2){
@@ -50,7 +54,19 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.addClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.removeClass('active')
         $location.path('/categories');
+      } else if(index == 3){
+        var myEl = angular.element( document.querySelector( '#news' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#candidates' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.addClass('active')
+        $location.path('/users');
       }
     };
     
@@ -71,7 +87,7 @@
     };
   }
 
-  function NewsController($http, $cookies, $location) {
+  function NewsController($http, $cookies, $location, $filter, $scope, $log) {
     var vm = this;
     vm.selectedNews = false;
     vm.news;
@@ -86,11 +102,36 @@
     vm.commentKeysArray;
     vm.newsCreationDate;
     vm.newsUpdateDate;
+    vm.newsArray;
+    vm.sortType     = 'created_time'; // set the default sort type
+    vm.sortReverse  = false;  // set the default sort order
+    vm.searchNews   = '';  //Filter news
+    vm.commentSortType = 'like_count';
+    vm.commentSortReverse = false;
+    vm.searchComments = '';
+    vm.media;
+    vm.filteredData;
     var headers =
     {
       'Content-Type':'application/json',
       'Accept':'application/json'
     }
+
+    // $scope.$watch('vm.searchNews', function(current, original) {
+    //   $log.info('vm.searchNews was %s', original);
+    //   $log.info('vm.searchNews is now %s', current);
+    // });
+    $scope.$watch(function() {
+      return vm.searchNews;
+    }, function(current, original) {
+      if(current == '' || /^\s+$/.test(current)){
+        vm.filteredData = vm.newsArray;
+      }else{
+        vm.filteredData = $filter("filter")(vm.newsArray, current)
+      }
+    });
+    
+
     vm.selectNews = function(newsChoice){
       vm.news = newsChoice;
       vm.newsIndex = vm.newsArray.indexOf(newsChoice);
@@ -110,11 +151,14 @@
         vm.commentKeysArray = Object.keys(vm.news.commentArray[0]);
       })
     };
+
+
     vm.saveNews = function(){
       vm.newsArray[vm.newsIndex] = vm.news ;
       var url_req = vm.mongoServer+'/updatePost';
       $http({method:'PUT', 'url':url_req, 'headers': headers, 'data':vm.news}).then(function(response){
         var results = response.data;
+        delete vm.newsArray[vm.newsIndex].commentArray;
         if(results.code == 1000){
           alert('Post actualizado exitosamente')
           vm.selectedNews = false;
@@ -122,10 +166,11 @@
           alert('Post no tuvo cambios')
           vm.selectedNews = false;
         }
+        
       })
-      
     };
     vm.return = function(){
+      delete vm.newsArray[vm.newsIndex].commentArray;
       vm.selectedNews = false;
     }
     
@@ -174,15 +219,7 @@
         })
       } 
     }
-    vm.newsArray;
-    vm.sortType     = 'created_time'; // set the default sort type
-    vm.sortReverse  = false;  // set the default sort order
-    vm.searchNews   = '';  //Filter news
-    vm.commentSortType = 'like_count';
-    vm.commentSortReverse = false;
-    vm.searchComments = '';
-    vm.media;
-
+   
 
     function init(){
       var myEl = angular.element( document.querySelector( '#news' ) );

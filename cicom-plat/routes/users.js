@@ -41,6 +41,7 @@ router.post('/createUser/',function(req,res,next){
     }
   });
 });
+
 router.delete('/deleteUser/:userId',function(req,res,next){
   User.deleteUser(req.params.userId,function(err,count){
     if(err){
@@ -88,13 +89,18 @@ router.post('/login',function(req,res,next){
           if(md5(selectedUser.password) == userFound.password){
             var UserToLogin ={
               userId: userFound.user_id,
-              token: md5(userFound.email+new Date()+userFound.password)
+              token: md5(userFound.email+new Date()+userFound.password),
             }
             SessionControl.addSession(UserToLogin,function(err,count){
               if(err){
                 res.json({"state":{"stateMessage":"ERROR_IN_LOGIN","code":2001},"data":err});
               }else{
                 UserToLogin.email = selectedUser.email;
+                if(selectedUser.is_admin == 0){
+                  userFound.isAdmin = false;
+                }else{
+                  userFound.isAdmin = true;
+                }
                 res.json({"state":{"stateMessage":"SUCCESS_LOGIN_USER","code":1000},"user":UserToLogin});
               }
             })

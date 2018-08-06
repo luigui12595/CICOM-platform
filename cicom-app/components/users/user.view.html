@@ -1,0 +1,119 @@
+<div ng-include src="'sidenav.html'" ng-controller="SideNavController as sidenav">
+</div>
+<div class="views" id="myApp">
+    <div class="userTable" ng-hide="users.userSelected">
+        <div class="titlePage">
+            <h1 id="usersTitle">Usuarios del sistema</h1>
+        </div>
+        <!--
+        <div class="newsSearch">
+            <h2 >Medio</h2>
+            <select class="form-control" name="singleSelect" ng-model="user.mediaSelected"
+            ng-options="option.facebook_name as option.name for option in users.media" ng-value="option.facebook_name" ></select>
+            <h2 >Fecha de inicio</h2>
+            <input class="borderbox"type="date" datetime="yyyy-MM-dd HH:mm:ss" ng-model="users.sinceDate"/>
+            <h2 >Fecha final</h2>
+            <input class="borderbox" type="date" datetime="yyyy-MM-dd HH:mm:ss" ng-model="users.untilDate"/>
+            <button class="btn btn-primary" type="button" ng-click="users.findNews()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>   
+        </div>
+        -->
+        <table class="table table-striped table-hover table-bordered table-responsive" >
+            <col width="100">
+            <col width="50">
+            <col width="50">
+            <col width="50">
+            <thead class="header">
+                <tr class="firstRow">
+                    <form>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                                <input type="text" class="form-control" placeholder="Filtrar..." ng-model="users.searchUsers">
+                            </div>      
+                        </div>                        
+                    </form>
+                </tr>
+                <tr class="firsts-th">
+                    <td>
+                        <p class="disabled" ng-click="users.sortType = 'email'; users.sortReverse = !users.sortReverse">
+                            Email 
+                            <span ng-show="users.sortType == 'email' && !users.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="users.sortType == 'email' && users.sortReverse" class="fa fa-caret-up"></span>
+                        <p>
+                    </td>
+                    <td>
+                        <p class="disabled" ng-click="users.sortType = 'creation_date'; users.sortReverse = !users.sortReverse">
+                            Fecha de creación
+                            <span ng-show="users.sortType == 'creation_date' && !users.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="users.sortType == 'creation_date' && users.sortReverse" class="fa fa-caret-up"></span>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="disabled" ng-click="users.sortType = 'active'; users.sortReverse = !users.sortReverse">
+                            Activo 
+                            <span ng-show="users.sortType == 'active' && !users.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="users.sortType == 'active' && users.sortReverse" class="fa fa-caret-up"></span>
+                        </p>
+                    </td>
+                    <td>
+                        <p class="disabled"  ng-click="users.sortType = 'is_admin'; users.sortReverse = !users.sortReverse">
+                            Administrador
+                            <span ng-show="users.sortType == 'is_admin' && !users.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="users.sortType == 'is_admin' && users.sortReverse" class="fa fa-caret-up"></span>
+                        </p>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dir-paginate="u in users.usersList | orderBy:users.sortType:users.sortReverse| filter:users.searchUsers | itemsPerPage:5" ng-click="users.selectUser(u)">
+                    <th >{{u.email}}</th>
+                    <td >{{u.creation_date|date:'medium'}}</td>
+                    <td >{{u.status? 'Si':'No'}}</td>
+                    <td >{{u.is_admin? 'Si':'No'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls
+        max-size="5"
+        direction-links="true"
+        boundary-links="true" >
+        </dir-pagination-controls>
+    </div>
+    <div class="userForm" ng-show="users.userSelected">
+        <div class="firstCol">
+            <div class="entry">
+                <h2 class="newsTitle">Nombre</h2><br/>
+                <input type="text" class="form-control" ng-model="users.user.fname"/>
+            </div>
+            <div class="entry">
+                <h2 class="newsTitle">Apellidos</h2><br/>
+                <input type="text" class="form-control" ng-model="users.user.lname"/>
+            </div>
+            <div class="entry">
+                <h2 class="newsTitle">Email</h2><br/>
+                <input type="text" class="form-control" name="media" ng-model="users.user.email" readonly/>
+            </div>
+            <div class="entry">
+                <h2 class="newsTitle">Ultima actualización de datos</h2><br/>
+                <label >{{users.user.modif_date|date:'medium'}}</label> 
+            </div>
+            <div class="entry">
+                <h2 class="newsTitle">Fecha de creación</h2><br/>
+                <label >{{users.user.creation_date|date:'medium'}}</label> 
+            </div>
+            <div class="entryCheckbox">
+                <input type="checkbox" ng-checked="users.user.status" name="active">
+                <label for="active">Activo</label>
+            </div>
+            <div class="entryCheckbox">
+                <input type="checkbox" ng-checked="users.user.isAdmin" name="isAdmin">
+                <label for="isAdmin">Administrador</label>
+            </div>
+        </div>
+        
+        <div class="controllerButtons">
+            <button class="btn btn-warning" id="returnButton" ng-click="users.return()">Cancelar</button>
+            <button class="btn btn-success" id="saveButton" ng-click="users.saveUser()">Guardar</button>
+        </div>
+    </div>
+</div>  

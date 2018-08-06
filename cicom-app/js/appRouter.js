@@ -44,7 +44,7 @@
       controller: 'NewsController',
       controllerAs:'news'
     })
-    .state('sidenav',{
+    .state('categories',{
       url : '/categories', //ruta del url del estado
       templateUrl : 'components/categories/categories.view.html',//vista que se va a cargar para este estado
       // El resolve sirve para el controlador junto con la vista
@@ -55,6 +55,18 @@
       },
       controller: 'CategoriesController',
       controllerAs:'categories'
+    })
+    .state('users',{
+      url : '/users', //ruta del url del estado
+      templateUrl : 'components/users/user.view.html',//vista que se va a cargar para este estado
+      // El resolve sirve para el controlador junto con la vista
+      resolve: {
+        load: ['$ocLazyLoad', function($ocLazyLoad){
+          return $ocLazyLoad.load('components/users/user.controller.js')
+        }]
+      },
+      controller: 'UserController',
+      controllerAs:'users'
     })
 
     $urlRouterProvider.otherwise('/login');

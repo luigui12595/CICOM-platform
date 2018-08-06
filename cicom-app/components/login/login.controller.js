@@ -18,7 +18,7 @@
       vm.success = false;
       
 
-  function init(){ // función que se llama así misma para indicar que sea lo primero que se ejecute
+      function init(){ // función que se llama así misma para indicar que sea lo primero que se ejecute
         vm.email = '';
         vm.password = '';
         var headers =
@@ -35,7 +35,7 @@
           $http.post(vm.server+'/users/login', body)
           .then(function(response, headers){
             var code = response.data.stateMessage.code;
-            if(code == 1016){
+            if(code == 1000){
               vm.loginCorrect = true;
               $location.path('/news');
             }
@@ -48,15 +48,16 @@
           if (e.keyCode == 13) {
             vm.login(vm.email, vm.password);
           }
-      });
-
-      
-
+      })
 
 
       vm.login = function(email, password){
         vm.user.email = email;
         vm.user.password = password;
+        if(!email || !password){
+          vm.errorLogginIn = true;
+          alert("Error. Datos no ingresados.");
+        }
         $http.post(vm.server+'/users/login', vm.user)
         .then(function(response, headers){
           var code = response.data.state.code;

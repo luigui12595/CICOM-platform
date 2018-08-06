@@ -38,6 +38,8 @@
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
           myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#users' ) );
+          myEl.removeClass('active')
           $location.path('/news');
         } else if(index == 1){
           var myEl = angular.element( document.querySelector( '#news' ) );
@@ -45,6 +47,8 @@
           myEl = angular.element( document.querySelector( '#candidates' ) );
           myEl.addClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#users' ) );
           myEl.removeClass('active')
           $location.path('/candidates');
         } else if(index == 2){
@@ -54,7 +58,19 @@
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
           myEl.addClass('active')
+          myEl = angular.element( document.querySelector( '#users' ) );
+          myEl.removeClass('active')
           $location.path('/categories');
+        } else if(index == 3){
+          var myEl = angular.element( document.querySelector( '#news' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#candidates' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#users' ) );
+          myEl.addClass('active')
+          $location.path('/users');
         }
       };
       
