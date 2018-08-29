@@ -54,8 +54,9 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-
-
+app.listen(8081, function () {
+  console.log('Connection successfull. CICOM platform App is running on port 8081');
+});
 
 
 // error handler

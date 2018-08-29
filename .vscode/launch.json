@@ -9,12 +9,17 @@
             "request": "launch",
             "name": "Launch via NPM",
             "runtimeExecutable": "npm",
-            "cwd":"${workspaceFolder}/cicom-plat/app.js",
             "runtimeArgs": [
                 "run-script",
                 "debug"
             ],
-            "port": 9229
+            "port": 8081
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${file}"
         }
     ]
 }

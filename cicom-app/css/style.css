@@ -159,7 +159,7 @@ button:focus {
     
 }
 
-.newsTable, .newsForm, .userTable, .userForm{
+.newsTable, .newsForm, .userTable, .userForm, .fileForm{
     margin:5% 5%;
 }
 
@@ -195,6 +195,7 @@ a.disabled, a.disabled span {
 .entry textarea, 
 .entry input, 
 .entry select{
+    margin-bottom: 10px;
     position: relative; 
     height: 100%;
     width:100%;
@@ -223,8 +224,10 @@ a.disabled, a.disabled span {
 .secondCol{
     float:left;
     width: 40%;
+    border: none;
     margin:  2% 2.5% 7.5% 5%;
     display: block;
+    padding:2%;
 }
 
 .entryDivision{
@@ -239,6 +242,9 @@ a.disabled, a.disabled span {
     margin:8%;
 }
 
+.entry .warn{
+    color:rgb(199, 179, 65);
+}
 
 .square {
     float:left;
@@ -285,7 +291,7 @@ a.disabled, a.disabled span {
     width:4rem;
 }
 
-.newsForm .controllerButtons{
+.newsForm .controllerButtons, .userForm .controllerButtons{
     margin:  2% 40% 7.5% 40%;
     display:inline-block;
 }
@@ -303,13 +309,19 @@ a.disabled, a.disabled span {
     font-weight: 600;
 }
 
-.newsSearch{
+.newsSearch, .mediaSearch{
     display:inline-block;
     width:100%;
     margin: 2.5% auto
 }
 
 .newsSearch select{
+    display:inline;
+    width:20%;
+}
+
+.mediaSearch select{
+    margin-top: 1%;
     display:inline;
     width:20%;
 }
@@ -332,6 +344,17 @@ a.disabled, a.disabled span {
 .titlePage{
     font-size: 18px;
     font-weight: 600;
+}
+
+.titlePage #createButton{
+    position: absolute;
+    top: 8%;
+    right: 4%;
+}
+
+.titlePage #selectMedia{
+    width:25%;
+    top:8%;
 }
 
 .linkButtons{

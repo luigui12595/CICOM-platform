@@ -8,7 +8,12 @@
   
   function SideNavController($http, $cookies, $location) {
     var vm = this;
+    vm.userAccess = true;
     function init(){ 
+      vm.currentUserActive = $cookies.getObject('currentUserActive');
+      if(!vm.currentUserActive.isAdmin){
+        vm.userAccess = false; 
+      }
       var myEl = angular.element( document.querySelector( '#users' ) );
       myEl.addClass('active')
     }init();
@@ -24,6 +29,9 @@
         var myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.removeClass('active')
       }else if(index == 3){
+        var myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.addClass('active')
+      }else if(index == 4){
         var myEl = angular.element( document.querySelector( '#users' ) );
         myEl.addClass('active')
       }
@@ -37,6 +45,8 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         $location.path('/news');
@@ -46,6 +56,8 @@
         myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.addClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
@@ -57,6 +69,8 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.addClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         $location.path('/categories');
@@ -66,6 +80,20 @@
         myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.addClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.removeClass('active')
+        $location.path('/files');
+      }else if(index == 4){
+        var myEl = angular.element( document.querySelector( '#news' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#candidates' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.addClass('active')
@@ -101,17 +129,13 @@
     vm.sortReverse  = false;  // set the default sort order
     vm.searchUsers   = '';  //Filter
     vm.userSelected = false;
-    vm.user = {
-      fname:" ",
-      lname:" ",
-      email:" ",
-      modif_date:" ",
-      creation_date:" ",
-      status:" ",
-      isAdmin:" ",
-      pass:" "
-    }
-    
+    vm.isCreating = false;
+    vm.user;
+    vm.confirmPass="";
+    vm.showPassword;
+    vm.currentUserActive;
+    vm.userAccess = true;
+
     var headers = {
       'Content-Type':'application/json',
       'Accept':'application/json'
@@ -123,23 +147,64 @@
     };
 
     vm.saveUser = function(){
-
+      if(vm.confirmPass !== vm.user.password){
+          alert("Las contraseñas no coinciden, por favor ingreselas de nuevo.")
+      }else if(vm.isCreating){
+        $http.post(vm.sqlServer+'/users/createUser', vm.user)
+          .then(function(response, headers){
+            var code = response.data.state.code;
+            if(code == 1002){
+              $http.get(vm.sqlServer+'/users/getUser')
+              .then(function(response, headers){
+                vm.usersList = response.data.data;
+                alert("El usuario se registró exitosamente.")
+                vm.isCreating = false
+                vm.userSelected = false;
+                vm.confirmPass = "";
+              })
+              
+            }
+          })
+      }else{
+        vm.isCreating = false
+        vm.userSelected = false;
+      }
     };
 
     vm.return = function(){
-      vm.user = {};
+      vm.isCreating = false;
       vm.userSelected = false;
     };
     
-    function init(){
+    vm.createUser = function(){
+      vm.user = {
+        fname:"",
+        lname:"",
+        email:"",
+        password:"",
+        isAdmin:false,
+        status:false,
+      };
+      vm.isCreating = true;
+      vm.userSelected = true;
+    }
+
+    function init(){ 
+      vm.currentUserActive = $cookies.getObject('currentUserActive');
+      if(!vm.currentUserActive.isAdmin){
+        vm.userAccess = false; 
+      }
       var myEl = angular.element( document.querySelector( '#news' ) );
-      myEl.addClass('active')
+      myEl.removeClass('active')
       myEl = angular.element( document.querySelector( '#candidates' ) );
       myEl.removeClass('active')
       myEl = angular.element( document.querySelector( '#categories' ) );
       myEl.removeClass('active')
+      myEl = angular.element( document.querySelector( '#files' ) );
+      myEl.removeClass('active')
       myEl = angular.element( document.querySelector( '#users' ) );
       myEl.addClass('active')
+      
       $http.get(vm.sqlServer+'/users/getUser')
       .then(function(response, headers){
         vm.usersList = response.data.data;

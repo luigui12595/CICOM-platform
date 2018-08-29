@@ -7,6 +7,7 @@
         'ngMessages',
         'ngSanitize',
         'ngCsv',
+        'angular-js-xlsx',
         'angularUtils.directives.dirPagination'
     ]);
 })();

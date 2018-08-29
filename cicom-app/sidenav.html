@@ -17,10 +17,15 @@
             <i class="fa fa-pencil" aria-hidden="true"></i>
             <p class="titleItem">Temas y Categorías</p>
         </li>
-        <li class="barButton" id="users" ng-class="sidenav.setActive(3)" ng-click="sidenav.getOut(3)">
+        <li class="barButton" id="files" ng-class="sidenav.setActive(3)" ng-click="sidenav.getOut(3)">
+            <i class="fa fa-file" aria-hidden="true"></i>
+            <p class="titleItem">Manejo de Archivos</p>
+        </li>
+        <li ng-if="sidenav.userAccess" class="barButton" id="users" ng-class="sidenav.setActive(4)" ng-click="sidenav.getOut(4)">
             <i class="fa fa-user" aria-hidden="true"></i>
             <p class="titleItem">Usuarios</p>
         </li>
+        
     </ul>
 
     <button class="btn btn-warning" id="logoutButton" ng-click="sidenav.logout()">

@@ -8,20 +8,30 @@
     
     function SideNavController($http, $cookies, $location, $scope) {
       var vm = this;
-      function init(){ // función que se llama así misma para indicar que sea lo primero que se ejecute
-        
+      vm.userAccess = true;
+      function init(){ 
+        vm.currentUserActive = $cookies.getObject('currentUserActive');
+        if(!vm.currentUserActive.isAdmin){
+          vm.userAccess = false; 
+        }
       }init();
       vm.setActive = function(index){
         if(index == 0){
-            var myEl = angular.element( document.querySelector( '#news' ) );
-            myEl.removeClass('active')
-          }else if(index == 1){
-            var myEl = angular.element( document.querySelector( '#candidates' ) );
-            myEl.removeClass('active')
-          }else if(index == 2){
-            var myEl = angular.element( document.querySelector( '#categories' ) );
-            myEl.addClass('active')
-          }
+          var myEl = angular.element( document.querySelector( '#news' ) );
+          myEl.removeClass('active')
+        }else if(index == 1){
+          var myEl = angular.element( document.querySelector( '#candidates' ) );
+          myEl.removeClass('active')
+        }else if(index == 2){
+          var myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+        }else if(index == 3){
+          var myEl = angular.element( document.querySelector( '#files' ) );
+          myEl.removeClass('active')
+        }else if(index == 4){
+          var myEl = angular.element( document.querySelector( '#users' ) );
+          myEl.addClass('active')
+        }
       };
   
       vm.getOut = function(index){
@@ -31,6 +41,8 @@
           myEl = angular.element( document.querySelector( '#candidates' ) );
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#files' ) );
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#users' ) );
           myEl.removeClass('active')
@@ -42,6 +54,8 @@
           myEl.addClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
           myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#files' ) );
+          myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#users' ) );
           myEl.removeClass('active')
           $location.path('/candidates');
@@ -52,6 +66,8 @@
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
           myEl.addClass('active')
+          myEl = angular.element( document.querySelector( '#files' ) );
+          myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#users' ) );
           myEl.removeClass('active')
           $location.path('/categories');
@@ -61,6 +77,20 @@
           myEl = angular.element( document.querySelector( '#candidates' ) );
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#files' ) );
+          myEl.addClass('active')
+          myEl = angular.element( document.querySelector( '#users' ) );
+          myEl.removeClass('active')
+          $location.path('/files');
+        }else if(index == 4){
+          var myEl = angular.element( document.querySelector( '#news' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#candidates' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#categories' ) );
+          myEl.removeClass('active')
+          myEl = angular.element( document.querySelector( '#files' ) );
           myEl.removeClass('active')
           myEl = angular.element( document.querySelector( '#users' ) );
           myEl.addClass('active')
@@ -100,6 +130,10 @@
         var myEl = angular.element( document.querySelector( '#news' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#candidates' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.addClass('active')

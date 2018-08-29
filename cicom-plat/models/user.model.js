@@ -16,7 +16,7 @@ var User={
     },
 
     addUser:function(User,callback){
-        return db.query("INSERT INTO user VALUES(?,?,?,?,?,NOW(),NOW(),?,?)",[0,User.fname,User.lname,User.email, md5(User.password),User.isAdmin],callback);
+        return db.query("INSERT INTO user VALUES(0,?,?,?,?,NOW(),NOW(),?,?)",[User.fname,User.lname,User.email, md5(User.password),User.status, User.isAdmin],callback);
     },
 
     deleteUser:function(userId,callback){

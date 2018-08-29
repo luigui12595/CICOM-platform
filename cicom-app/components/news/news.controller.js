@@ -4,11 +4,26 @@
   angular
   .module('cmsApp')
   .controller('NewsController', NewsController)
-  .controller('SideNavController', SideNavController);
+  .controller('SideNavController', SideNavController)
+  .directive('expand', function () {
+    function link(scope, element, attrs) {
+        scope.$on('onExpandAll', function (event, args) {
+            scope.expanded = args.expanded;
+        });
+    }
+    return {
+        link: link
+    };
+  });;
   
   function SideNavController($http, $cookies, $location) {
     var vm = this;
+    vm.userAccess = true;
     function init(){ 
+      vm.currentUserActive = $cookies.getObject('currentUserActive');
+      if(!vm.currentUserActive.isAdmin){
+        vm.userAccess = false; 
+      } 
       var myEl = angular.element( document.querySelector( '#news' ) );
       myEl.addClass('active')
     }init();
@@ -16,13 +31,19 @@
     vm.setActive = function(index){
       if(index == 0){
         var myEl = angular.element( document.querySelector( '#news' ) );
-        myEl.addClass('active')
+        myEl.removeClass('active')
       }else if(index == 1){
         var myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.removeClass('active')
       }else if(index == 2){
         var myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.removeClass('active')
+      }else if(index == 3){
+        var myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
+      }else if(index == 4){
+        var myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.addClass('active')
       }
     };
 
@@ -34,6 +55,8 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         $location.path('/news');
@@ -43,6 +66,8 @@
         myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.addClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
@@ -54,6 +79,8 @@
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
         myEl.addClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.removeClass('active')
         $location.path('/categories');
@@ -63,6 +90,20 @@
         myEl = angular.element( document.querySelector( '#candidates' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
+        myEl.addClass('active')
+        myEl = angular.element( document.querySelector( '#users' ) );
+        myEl.removeClass('active')
+        $location.path('/files');
+      }else if(index == 4){
+        var myEl = angular.element( document.querySelector( '#news' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#candidates' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#categories' ) );
+        myEl.removeClass('active')
+        myEl = angular.element( document.querySelector( '#files' ) );
         myEl.removeClass('active')
         myEl = angular.element( document.querySelector( '#users' ) );
         myEl.addClass('active')
@@ -111,6 +152,14 @@
     vm.searchComments = '';
     vm.media;
     vm.filteredData;
+
+    vm.expandAll = function(expanded) {
+      // $scope is required here, hence the injection above, even though we're using "controller as" syntax
+      $scope.$broadcast('onExpandAll', {
+        expanded: expanded
+      });
+    };
+
     var headers =
     {
       'Content-Type':'application/json',
@@ -155,10 +204,10 @@
 
     vm.saveNews = function(){
       vm.newsArray[vm.newsIndex] = vm.news ;
+      delete vm.newsArray[vm.newsIndex].commentArray;
       var url_req = vm.mongoServer+'/updatePost';
       $http({method:'PUT', 'url':url_req, 'headers': headers, 'data':vm.news}).then(function(response){
         var results = response.data;
-        delete vm.newsArray[vm.newsIndex].commentArray;
         if(results.code == 1000){
           alert('Post actualizado exitosamente')
           vm.selectedNews = false;
@@ -227,7 +276,12 @@
       myEl = angular.element( document.querySelector( '#candidates' ) );
       myEl.removeClass('active')
       myEl = angular.element( document.querySelector( '#categories' ) );
+      myEl.removeClass('active')  
+      myEl = angular.element( document.querySelector( '#files' ) );
       myEl.removeClass('active')
+      myEl = angular.element( document.querySelector( '#users' ) );
+      myEl.removeClass('active')
+        
       $http.get(vm.sqlServer+'/Media/getMedia')
       .then(function(response, headers){
         vm.media = response.data.data;

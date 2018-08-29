@@ -10,13 +10,16 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.6.7",
+    "angular-csv-import": "0.0.27",
     "angular-data-table": "^0.7.0",
     "angular-datetime-input": "^5.2.1",
+    "angular-js-xlsx": "0.0.3",
     "angular-utils-pagination": "^0.11.1",
     "btoa": "^1.1.2",
     "http-server": "^0.11.1",
     "install": "^0.10.2",
     "ng-csv": "^0.3.6",
-    "npm": "^6.1.0"
+    "npm": "^6.4.0",
+    "papaparse": "^4.6.0"
   }
 }
