@@ -128,18 +128,20 @@
     };
   }
 
-  function NewsController($http, $cookies, $location, $filter, $scope, $log) {
+  function NewsController($http, $cookies, $location, $filter, $scope, $log, $templateCache) {
     var vm = this;
+    vm.showLoader = false;
     vm.selectedNews = false;
     vm.news;
     vm.sqlServer = 'http://localhost:8081';
     vm.mongoServer = 'http://localhost:8080';
     vm.newsIndex;
     vm.subjects;
-    vm.mediaSelected = "todos";
+    vm.mediaSelected = "Todos";
     vm.sinceDate;
     vm.untilDate;
     vm.keysArray;
+    vm.originalCommentsArray;
     vm.commentKeysArray;
     vm.newsCreationDate;
     vm.newsUpdateDate;
@@ -147,7 +149,7 @@
     vm.sortType     = 'created_time'; // set the default sort type
     vm.sortReverse  = false;  // set the default sort order
     vm.searchNews   = '';  //Filter news
-    vm.commentSortType = 'like_count';
+    vm.commentSortType = 'comment_position';
     vm.commentSortReverse = false;
     vm.searchComments = '';
     vm.media;
@@ -182,40 +184,82 @@
     
 
     vm.selectNews = function(newsChoice){
+      vm.showLoader = true;
       vm.news = newsChoice;
       vm.newsIndex = vm.newsArray.indexOf(newsChoice);
       vm.selectedNews = true;
-      vm.newsCreationDate = new Date(vm.news.created_time);
-      vm.newsUpdateDate = new Date(vm.news.updated_time);
-      var url_req = vm.mongoServer+'/getComments/'+vm.news._id;
+      var url_req = vm.mongoServer+'/getComments';
       var config = {
         headers : {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
       }
-      $http.get(url_req,config)
-      .then(function(response, headers){
-        vm.news.commentArray = response.data.results;
-        vm.commentKeysArray = Object.keys(vm.news.commentArray[0]);
-      })
+      $http({url: url_req, method: 'GET', params:{"post_id":vm.news.post_id}}).
+        then(function(response) {
+          var commentsArray = response.data;
+          vm.originalCommentsArray = commentsArray;
+          var resultArray = [];
+          for (var i = 0; i < commentsArray.length; i++){
+            if(commentsArray[i].is_reply == 0){
+              commentsArray[i].commentsResponse=[];
+              resultArray.push(commentsArray[i]);
+            }else{
+              resultArray[resultArray.length-1].commentsResponse.push(commentsArray[i]);
+            }
+          }
+          for (var i = 0; i < resultArray.length; i++){
+            resultArray[i].comment_count = resultArray[i].commentsResponse.length;
+          }
+          vm.news.commentArray = resultArray;
+          vm.commentKeysArray = Object.keys(vm.originalCommentsArray[0]);
+          vm.showLoader = false;
+        }, function(response) {
+          console.log(response);
+          vm.showLoader = false;
+      });
+      // $http.get(url_req,config)
+      // .then(function(response, headers){
+      //   vm.news.commentArray = response.data.results;
+      //   vm.commentKeysArray = Object.keys(vm.news.commentArray[0]);
+      //   vm.showLoader = false;
+      // })
+      // var config = {
+      //   headers : {
+      //       'Content-Type': 'application/json',
+      //       'Accept': 'application/json'
+      //   }
+      // }
+      // $http.get(url_req,config).then(function(response, headers){
+      //   vm.news.commentArray = response.data.results;
+      //   vm.commentKeysArray = Object.keys(vm.news.commentArray[0]);
+      //   vm.showLoader = false;
+      // })
     };
 
 
     vm.saveNews = function(){
+      vm.showLoader = true;
       vm.newsArray[vm.newsIndex] = vm.news ;
       delete vm.newsArray[vm.newsIndex].commentArray;
       var url_req = vm.mongoServer+'/updatePost';
-      $http({method:'PUT', 'url':url_req, 'headers': headers, 'data':vm.news}).then(function(response){
-        var results = response.data;
-        if(results.code == 1000){
-          alert('Post actualizado exitosamente')
-          vm.selectedNews = false;
-        }else{
-          alert('Post no tuvo cambios')
-          vm.selectedNews = false;
+      var config = {
+        headers : {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
-        
+      }
+      $http.put(url_req,vm.news,config)
+           .then(function(response,headers){
+            var results = response.data;
+            if(results.code == 1000){
+              alert('Post actualizado exitosamente')
+              vm.selectedNews = false;
+            }else{
+              alert('Post no tuvo cambios')
+              vm.selectedNews = false;
+            }
+            vm.showLoader = false;
       })
     };
     vm.return = function(){
@@ -224,6 +268,7 @@
     }
     
     vm.findNews = function(){
+      vm.showLoader = true;
       if(!vm.sinceDate || !vm.untilDate){
         alert("Es necesario introducir un rango de fechas");
         return;
@@ -236,7 +281,7 @@
         alert("La fecha inicial debe de ser anterior a la fecha final");
         return;
       }
-      if(vm.mediaSelected == "todos"){
+      if(vm.mediaSelected == "Todos"){
         var url_req = vm.mongoServer+'/getPosts/'+(since_secs).toString()+'/'+(until_secs).toString();
         var config = {
           headers : {
@@ -248,6 +293,7 @@
         .then(function(response, headers){
           vm.newsArray = response.data.results;
           vm.keysArray = Object.keys(vm.newsArray[0]);
+          vm.showLoader = false;
         })
       }else{
         var url_req = vm.mongoServer+'/getPosts/'+vm.mediaSelected+"/"+(since_secs).toString()+'/'+(until_secs).toString();
@@ -265,6 +311,7 @@
           }else{
             alert('No se encontraron posts del medio buscado en las fechas requeridas');
           }
+          vm.showLoader = false;
         })
       } 
     }

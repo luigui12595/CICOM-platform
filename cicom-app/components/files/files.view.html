@@ -1,22 +1,31 @@
 <div ng-include src="'sidenav.html'" ng-controller="SideNavController as sidenav">
 </div>
+<div class="loading" ng-show="files.showLoader">Loading&#8230;</div>
 <div class="views" id="myApp">
     <div class="fileForm">
         <div class="titlePage">
             <h1>Subir archivos por medio</h1><br/>
         </div>
-        <div class="mediaSearch">
-            <h2 >Medio</h2>
-            <select class="form-control" name="singleSelect" ng-model="files.mediaSelected"
-            ng-options="option.facebook_name as option.name for option in files.media" ng-value="option.facebook_name" ></select>
+        <div class="uploadAttributes">
+            <h2 >Medio:</h2>
+            <select id="mediaCombo" class="form-control" name="singleSelect" ng-model="files.mediaSelected"
+            ng-options="option as option.name for option in files.media" ng-value="option.facebook_name" ></select>
         </div>
-        {{files.file}}
-        <div class="linkButtons">
-                <js-xls onread='files.read()' onerror='files.error()'></js-xls>
-            <!-- <ng-csv-import content="csv.content"
-            header="csv.header" 
-            separator="csv.separator"
-            result="csv.result"></ng-csv-import> -->
+        <div class="uploadAttributes" ng-hide="files.documentType == ' '">
+            <h2 >Tipo de Datos:</h2>
+            <label id="documentType"> {{files.documentType}} </label>
+        </div>
+        <div class="uploadAttributes">
+            <input accept=".tab, .csv" ng-hide="files.mediaSelected == ' '||files.mediaSelected.name == 'Todos'" type="file" import-sheet-js="" multiple="true" />
+        </div>
+        <div class="box box-default">
+            <code>
+                <pre>{{files.dataArray[0]|json}}</pre>
+            </code>
+        </div>
+        <div class="linkButtons" ng-hide="files.dataArray.length<1 || files.documentType == ' '">
+            <button class="btn btn-warning" id="returnButton" ng-click="files.cancelData()">Cancelar</button>
+            <button class="btn btn-success" id="saveButton" ng-click="files.saveData()">Guardar</button>
         </div>
     </div>
 </div>
