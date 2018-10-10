@@ -252,8 +252,13 @@
                             <button ng-click="expanded = !expanded" expand>
                                 <span ng-bind="expanded ? '-' : '+'"></span>
                             </button>
-                        </td>
-                        <td >{{n.comment_message}}</td>
+                        </td>                 
+                        <div ng-show="n.comment_message == ''"> 
+                            <td ng-show="n.comment_message == ''">-</td> 
+                        </div>
+                        <div ng-show="n.comment_message != ''"> 
+                            <td ng-show="n.comment_message != ''">{{n.comment_message}}</td>
+                        </div>
                         <td >{{n.comment_like_count}}</td>
                         <td >{{n.comment_published|date:'medium'}}</td>
                         <td >{{n.comment_count}}</td>
@@ -274,7 +279,16 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="commentR in n.commentsResponse | orderBy:comment_position">
-                                            <td>{{commentR.comment_message}}</td>
+                                            <div ng-show="commentR.comment_message == '' && commentR.attachment_url!=''"> 
+                                                <td ng-show="commentR.comment_message == '' && commentR.attachment_url!=''"><img ng-src={{commentR.attachment_url}}/></td>
+                                            </div>
+                                            <div ng-show="commentR.comment_message == '' && commentR.attachment_url==''"> 
+                                                <td ng-show="commentR.comment_message == '' && commentR.attachment_url==''">-</td> 
+                                            </div>
+                                            <div ng-show="commentR.comment_message != '' "> 
+                                                <td ng-show="commentR.comment_message != '' ">{{commentR.comment_message}}</td>
+                                            </div>
+                                           
                                             <td>{{commentR.comment_published|date:'medium'}}</td>
                                             <td>{{commentR.comment_like_count}}</td>
                                         </tr>

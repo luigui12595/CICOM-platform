@@ -183,10 +183,6 @@
       var vm = this;
       vm.sqlServer = 'http://localhost:8081';
       vm.mongoServer = 'http://localhost:8080';
-      vm.headers = {
-                      'Content-Type':'application/json',
-                      'Accept':'application/json'
-                    }
       vm.media;
       vm.mediaSelected = " "
       vm.dataArray=[];
@@ -200,7 +196,12 @@
         }else if(vm.documentType == "Posts"){
           url_req = vm.mongoServer+'/insertPost';
         }
-        $http.post(url_req, {'dataArray':vm.dataArray}, vm.headers)
+        var config = {
+          headers : {
+              'Content-Type': 'text/plain'
+          }
+        }
+        $http.post(url_req, {'dataArray':vm.dataArray}, config)
           .then(function(response){
             var results = response.data;
             if(results.stateMessage.code == 1000){

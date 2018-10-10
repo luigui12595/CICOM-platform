@@ -200,12 +200,18 @@
           var commentsArray = response.data;
           vm.originalCommentsArray = commentsArray;
           var resultArray = [];
+          var responseComments = [];
           for (var i = 0; i < commentsArray.length; i++){
             if(commentsArray[i].is_reply == 0){
-              commentsArray[i].commentsResponse=[];
+              if(responseComments.length>0){
+                commentsArray[i].commentsResponse=responseComments;
+                responseComments = [];
+              }else{
+                commentsArray[i].commentsResponse=[];
+              }
               resultArray.push(commentsArray[i]);
             }else{
-              resultArray[resultArray.length-1].commentsResponse.push(commentsArray[i]);
+              responseComments.push(commentsArray[i]);
             }
           }
           for (var i = 0; i < resultArray.length; i++){
@@ -245,8 +251,7 @@
       var url_req = vm.mongoServer+'/updatePost';
       var config = {
         headers : {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
       }
       $http.put(url_req,vm.news,config)
@@ -260,7 +265,10 @@
               vm.selectedNews = false;
             }
             vm.showLoader = false;
-      })
+      }).then(function (obj) {  
+        console.log(obj); // -> 'San Francisco'
+        vm.showLoader = false;
+    });
     };
     vm.return = function(){
       delete vm.newsArray[vm.newsIndex].commentArray;
@@ -271,6 +279,7 @@
       vm.showLoader = true;
       if(!vm.sinceDate || !vm.untilDate){
         alert("Es necesario introducir un rango de fechas");
+        vm.showLoader = false;
         return;
       }
       var since_date = new Date(vm.sinceDate); // some mock date
@@ -282,30 +291,34 @@
         return;
       }
       if(vm.mediaSelected == "Todos"){
-        var url_req = vm.mongoServer+'/getPosts/'+(since_secs).toString()+'/'+(until_secs).toString();
+        var url_req = vm.mongoServer+'/getPosts';
         var config = {
           headers : {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
           }
         }
-        $http.get(url_req,config)
+        $http({url: url_req, method: 'GET', params:{"finicio":since_secs, "ffinal":until_secs}})
         .then(function(response, headers){
-          vm.newsArray = response.data.results;
-          vm.keysArray = Object.keys(vm.newsArray[0]);
+          vm.newsArray = response.data;
+          if(vm.newsArray.length > 0){
+            vm.keysArray = Object.keys(vm.newsArray[0]);
+          }else{
+            alert('No se encontraron posts del medio buscado en las fechas requeridas');
+          }
           vm.showLoader = false;
         })
       }else{
-        var url_req = vm.mongoServer+'/getPosts/'+vm.mediaSelected+"/"+(since_secs).toString()+'/'+(until_secs).toString();
+        var url_req = vm.mongoServer+'/getPosts';
         var config = {
           headers : {
               'Content-Type': 'application/json',
               'Accept': 'application/json'
           }
         }
-        $http.get(url_req,config)
+        $http({url: url_req, method: 'GET', params:{"medio":vm.mediaSelected,"finicio":since_secs, "ffinal":until_secs}})
         .then(function(response, headers){
-          vm.newsArray = response.data.results;
+          vm.newsArray = response.data;
           if(vm.newsArray.length > 0){
             vm.keysArray = Object.keys(vm.newsArray[0]);
           }else{
