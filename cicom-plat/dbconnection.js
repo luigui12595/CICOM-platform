@@ -2,7 +2,13 @@ var mysql=require('mysql');
 var connection=mysql.createPool({
     host:'localhost',
     user:'root',
-    password:'fofirocks',
+    password:'jicaros',
     database:'cicom'
 });
+// var connection=mysql.createPool({
+//     host:'localhost',
+//     user:'root',
+//     password:'fofirocks',
+//     database:'cicom'
+// });
 module.exports=connection;
