@@ -117,7 +117,10 @@
   
     function CategoriesController($http, $cookies, $location) {
       var vm = this;
-      vm.server = 'http://localhost:8081';
+      //LOCAL
+      //vm.server = 'http://localhost:8081';
+      //PROD
+      vm.server = 'http://cluster.cenat.ac.cr:8081';
       vm.headers = {
                       'Content-Type':'application/json',
                       'Accept':'application/json'
