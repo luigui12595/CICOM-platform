@@ -208,8 +208,8 @@
         $http.post(url_req, {'dataArray':vm.dataArray}, config)
           .then(function(response){
             var results = response.data;
-            if(results.stateMessage.code == 1000){
-              alert('Datos insertados correctamente: '+results.responseObject.nUpserted+'\n Conicidencias de Datos: '+results.responseObject.nMatched);
+            if(response.status == 200){
+              alert('Datos insertados correctamente: '+results.nUpserted+'\n Datos previamente insertados: '+results.nMatched);
               vm.dataArray=[];
               vm.mediaSelected = " ";
               vm.documentType = " "

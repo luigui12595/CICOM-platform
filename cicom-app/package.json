@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular": "^1.6.7",
+    "angular": "^1.7.5",
     "angular-csv-import": "0.0.27",
     "angular-data-table": "^0.7.0",
     "angular-datetime-input": "^5.2.1",

@@ -187,7 +187,7 @@
         email:"",
         password:"",
         isAdmin:false,
-        status:false,
+        active:false,
       };
       vm.isCreating = true;
       vm.userSelected = true;

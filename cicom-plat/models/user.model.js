@@ -4,7 +4,7 @@ var md5 = require('md5');
 var User={
 
     getAllUsers:function(callback){
-        return db.query("SELECT * FROM user WHERE status = 1",callback);
+        return db.query("SELECT * FROM user WHERE active = 1",callback);
     },
 
     getUserByEmail:function(email,callback){
@@ -16,15 +16,15 @@ var User={
     },
 
     addUser:function(User,callback){
-        return db.query("INSERT INTO user VALUES(0,?,?,?,?,NOW(),NOW(),?,?)",[User.fname,User.lname,User.email, md5(User.password),User.status, User.isAdmin],callback);
+        return db.query("INSERT INTO user VALUES(0,?,?,?,?,NOW(),NOW(),?,?)",[User.fname,User.lname,User.email, md5(User.password),User.active, User.isAdmin],callback);
     },
 
     deleteUser:function(userId,callback){
-        return db.query("UPDATE user SET status = 0, modif_date = NOW() WHERE userId=?",[userId],callback);
+        return db.query("UPDATE user SET active = 0, modif_date = NOW() WHERE userId=?",[userId],callback);
     },
 
     updateUser:function(User,callback){
-        return db.query("UPDATE user SET fname=?, lname=?, email=?, modif_date=NOW(), status=?, is_admin=? WHERE userId=?",[User.fname,User.lname,User.email, User.modifDate, User.status, User.isAdmin, User.userId],callback);
+        return db.query("UPDATE user SET fname=?, lname=?, email=?, modif_date=NOW(), active=?, is_admin=? WHERE userId=?",[User.fname,User.lname,User.email, User.modifDate, User.active, User.isAdmin, User.userId],callback);
     }
 
 };

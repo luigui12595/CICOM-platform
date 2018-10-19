@@ -134,11 +134,11 @@
     vm.selectedNews = false;
     vm.news;
     //LOCAL
-    // vm.sqlServer = 'http://localhost:8081';
-    // vm.mongoServer = 'http://localhost:8082';
+    vm.sqlServer = 'http://localhost:8081';
+    vm.mongoServer = 'http://localhost:8082';
     //PROD
-    vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
-    vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
+    // vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
+    // vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
     vm.newsIndex;
     vm.subjects;
     vm.mediaSelected = "Todos";
@@ -258,10 +258,10 @@
             'Content-Type': 'application/json'
         }
       }
-      $http.put(url_req,vm.news,config)
+      $http.put(url_req,vm.news, config.headers)
            .then(function(response,headers){
             var results = response.data;
-            if(results.code == 1000){
+            if(results.matched == 1){
               alert('Post actualizado exitosamente')
               vm.selectedNews = false;
             }else{

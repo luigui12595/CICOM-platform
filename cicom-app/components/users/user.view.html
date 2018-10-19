@@ -57,7 +57,7 @@
                 <tr dir-paginate="u in users.usersList | orderBy:users.sortType:users.sortReverse| filter:users.searchUsers | itemsPerPage:5" ng-click="users.selectUser(u)">
                     <th >{{u.email}}</th>
                     <td >{{u.creation_date|date:'medium'}}</td>
-                    <td >{{u.status? 'Si':'No'}}</td>
+                    <td >{{u.active? 'Si':'No'}}</td>
                     <td >{{u.is_admin? 'Si':'No'}}</td>
                 </tr>
             </tbody>
@@ -117,7 +117,7 @@
                     <h2 class="newsTitle">Estado y permisos</h2>
                 </div>
                 <div class="entryCheckbox">
-                    <input type="checkbox" ng-model="users.user.status" name="active">
+                    <input type="checkbox" ng-model="users.user.active" name="active">
                     <label for="active">Activo</label>
                 </div>
                 <div class="entryCheckbox">
