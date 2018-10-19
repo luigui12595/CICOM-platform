@@ -151,10 +151,27 @@
     };
 
     vm.saveUser = function(){
-      if(vm.confirmPass !== vm.user.password){
+      if(!vm.isCreating){
+        $http.put(vm.sqlServer+'/users/updateUser/'+vm.user.user_id, vm.user)
+          .then(function(response, headers){
+            var code = response.data.state.code;
+            if(code == 1002){
+              $http.get(vm.sqlServer+'/users/getUser')
+              .then(function(response, headers){
+                vm.usersList = response.data.data;
+                alert("El usuario se actualizó exitosamente.")
+                vm.isCreating = false
+                vm.userSelected = false;
+                vm.confirmPass = "";
+              })
+              
+            }
+          })
+      }else{
+        if(vm.confirmPass !== vm.user.password){
           alert("Las contraseñas no coinciden, por favor ingreselas de nuevo.")
-      }else if(vm.isCreating){
-        $http.post(vm.sqlServer+'/users/createUser', vm.user)
+        }else{
+          $http.post(vm.sqlServer+'/users/createUser', vm.user)
           .then(function(response, headers){
             var code = response.data.state.code;
             if(code == 1002){
@@ -169,9 +186,7 @@
               
             }
           })
-      }else{
-        vm.isCreating = false
-        vm.userSelected = false;
+        }
       }
     };
 

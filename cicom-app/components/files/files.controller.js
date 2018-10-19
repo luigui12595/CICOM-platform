@@ -247,7 +247,9 @@
         myEl.removeClass('active')
         $http.get(vm.sqlServer+'/Media/getMedia')
         .then(function(response, headers){
-            vm.media = response.data.data;
+            var mediaArray = response.data.data;
+            mediaArray.pop();
+            vm.media = mediaArray;
         })
       }init();
       
