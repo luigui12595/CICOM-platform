@@ -52,16 +52,5 @@ router.put('/updateMedia/',function(req,res,next){
   });
 });
 
-router.get('/news', function (req, res) {
-  fs.readFile('/Users/luiscampos/Documents/Investigacion-CICOM/CICOM-platform/cicom-plat/routes/news.json', 'utf8', function (err,data) {
-      if (err) {
-          return console.log(err);
-      }
-      console.log(data);
-      res.send(data)
-  });
-
-})
-
 
 module.exports = router;

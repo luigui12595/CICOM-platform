@@ -55,7 +55,7 @@ app.use(function(req, res, next) {
 });
 
 app.listen(8081, function () {
-  console.log('Connection successfull. CICOM platform App is running on port 8081');
+  console.log('Connection successfull. MediaTIC platform App is running on port 8081');
 });
 
 
