@@ -134,11 +134,11 @@
     vm.selectedNews = false;
     vm.news;
     //LOCAL
-    vm.sqlServer = 'http://localhost:8081';
-    vm.mongoServer = 'http://localhost:8082';
+    // vm.sqlServer = 'http://localhost:8081';
+    // vm.mongoServer = 'http://localhost:8082';
     //PROD
-    // vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
-    // vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
+    vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
+    vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
     vm.newsIndex;
     vm.subjects;
     vm.mediaSelected = "Todos";

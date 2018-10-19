@@ -78,11 +78,6 @@ body{
     clear: both;
 }
 
-.active {
-    background:#3f5976;
-    color:#FFDE25;
-}
-
 .login{
     background-color:#283E56;
     height: 100%;
