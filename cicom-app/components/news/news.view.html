@@ -9,7 +9,7 @@
         <div class="newsSearch">
             <h2 >Medio</h2>
             <select class="form-control" name="singleSelect" ng-model="news.mediaSelected"
-            ng-options="option.facebook_name as option.name for option in news.media" ng-value="option.facebook_name" ></select>
+            ng-options="option.facebook_id as option.name for option in news.media" ng-value="option.facebook_id" ></select>
             <h2 >Fecha de inicio</h2>
             <input class="borderbox"type="date" datetime="yyyy-MM-dd HH:mm:ss" ng-model="news.sinceDate"/>
             <h2 >Fecha final</h2>
@@ -191,7 +191,7 @@
                     </div>
             </div>
         </div>
-        <div class="postComments">
+        <div class="postComments" ng-show="news.originalCommentsArray.length > 0">
             <h2 class="newsTitle">Comentarios</h2>
             <table class="table table-striped table-hover table-bordered table-responsive" >
                 <col width="10">
@@ -303,7 +303,9 @@
             direction-links="true"
             boundary-links="true" >
             </dir-pagination-controls>
-            <button class="btn btn-success" id="downloadButton" type="button" ng-csv="news.originalCommentsArray" csv-header="news.commentKeysArray" filename="CommentPost.csv" >CSV</button>                                
+            <div ng-show="news.originalCommentsArray">
+                <button class="btn btn-success" id="downloadButton" type="button" ng-csv="news.originalCommentsArray" csv-header="news.commentKeysArray" filename="CommentPost.csv" >CSV</button>                                
+            </div>
         </div>  
         <div class="controllerButtons">
             <button class="btn btn-warning" id="returnButton" ng-click="news.return()">Cancelar</button>

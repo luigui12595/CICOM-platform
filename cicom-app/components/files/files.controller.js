@@ -38,15 +38,24 @@
                 if(elementJson != {}){
                   jsonArr.push(cloneObject(elementJson));
                 }
+              }
+              var filename = changeEvent.target.files[0].name;
+              var splittedFilename = filename.split("_");
+              var media = scope.$parent.files.media;
+              var mediaSelected = {};
+              for(var i = 0; i < media.length; i++) {
+                if(splittedFilename[1]==media[i].facebook_id){
+                  mediaSelected = media[i];
+                }
               } 
               for(var i = 0; i < jsonArr.length; i++) {
-                jsonArr[i].from = scope.$parent.files.mediaSelected;
+                jsonArr[i].from = mediaSelected;
               }
-              console.log(jsonArr);
+              scope.$apply(scope.$parent.files.mediaSelected = mediaSelected.name);
               scope.$apply(scope.$parent.files.dataArray = jsonArr);
-              if(changeEvent.target.files[0].name.endsWith('fullstats.tab')){
+              if(filename.endsWith('fullstats.tab')&& Object.keys(mediaSelected).length > 0){
                 scope.$apply(scope.$parent.files.documentType = 'Posts');
-              }else if(changeEvent.target.files[0].name.endsWith('comments.tab')){
+              }else if(filename.endsWith('comments.tab')&& Object.keys(mediaSelected).length > 0){
                 scope.$apply(scope.$parent.files.documentType = 'Comentarios');
               }else{
                 alert('Archivo no soportado');
@@ -75,98 +84,32 @@
       vm.userAccess = true;
       function init(){ 
         vm.currentUserActive = $cookies.getObject('currentUserActive');
+        if(vm.currentUserActive == null){
+          $location.path('/login');
+        }
         if(!vm.currentUserActive.isAdmin){
           vm.userAccess = false; 
         }
       }init();
-      vm.setActive = function(index){
-        if(index == 0){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.removeClass('active')
-        }else if(index == 1){
-          var myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.removeClass('active')
-        }else if(index == 2){
-          var myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.removeClass('active')
-        }else if(index == 3){
-          var myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.addClass('active')
-        }else if(index == 4){
-          var myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.removeClass('active')
-        }
-      };
   
       vm.getOut = function(index){
         if(index == 0){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.addClass('active')
-          myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.removeClass('active')
           $location.path('/news');
         } else if(index == 1){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.addClass('active')
-          myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.removeClass('active')
-          $location.path('/candidates');
+          $location.path('/comments');
         } else if(index == 2){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.addClass('active')
-          myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.removeClass('active')
           $location.path('/categories');
         } else if(index == 3){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.addClass('active')
-          myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.removeClass('active')
           $location.path('/files');
         }else if(index == 4){
-          var myEl = angular.element( document.querySelector( '#news' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#candidates' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#categories' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#files' ) );
-          myEl.removeClass('active')
-          myEl = angular.element( document.querySelector( '#users' ) );
-          myEl.addClass('active')
           $location.path('/users');
         }
       };
       
       vm.logout = function(){
-        //$cookies.remove('currentUserActive');
-        //console.log($cookies.get('currentUserActive'));
+        $cookies.remove('currentUserActive');
+        console.log($cookies.get('currentUserActive'));
         //vm.loginCorrect = false;
-        
         $location.path('/login');
       }
       function cloneObject(object){
@@ -182,16 +125,17 @@
     function FilesController($http, $cookies, $location) {
       var vm = this;
       //LOCAL
-      // vm.sqlServer = 'http://localhost:8081';
-      // vm.mongoServer = 'http://localhost:8082';
+      vm.sqlServer = 'http://localhost:8081';
+      vm.mongoServer = 'http://localhost:8082';
       //PROD
-      vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
-      vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
+      // vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
+      // vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
       vm.media;
       vm.mediaSelected = " "
       vm.dataArray=[];
       vm.documentType=" "
       vm.showLoader = false;
+      vm.currentUserActive;
       vm.saveData = function(){
         vm.showLoader = true;
         var url_req = "";
@@ -209,7 +153,7 @@
           .then(function(response){
             var results = response.data;
             if(response.status == 200){
-              alert('Datos insertados correctamente: '+results.nUpserted+'\n Datos previamente insertados: '+results.nMatched);
+              alert('Datos insertados correctamente: '+results.nUpserted+'\nDatos previamente insertados: '+results.nMatched);
               vm.dataArray=[];
               vm.mediaSelected = " ";
               vm.documentType = " "
@@ -234,17 +178,11 @@
         vm.documentType = " "
       }
       
-      function init(){ // función que se llama así misma para indicar que sea lo primero que se ejecute
-        var myEl = angular.element( document.querySelector( '#news' ) );
-        myEl.removeClass('active')
-        myEl = angular.element( document.querySelector( '#candidates' ) );
-        myEl.removeClass('active')
-        myEl = angular.element( document.querySelector( '#files' ) );
-        myEl.addClass('active')
-        myEl = angular.element( document.querySelector( '#users' ) );
-        myEl.removeClass('active')
-        myEl = angular.element( document.querySelector( '#categories' ) );
-        myEl.removeClass('active')
+      function init(){
+        vm.currentUserActive = $cookies.getObject('currentUserActive');
+        if(vm.currentUserActive == null){
+          $location.path('/login');
+        }
         $http.get(vm.sqlServer+'/Media/getMedia')
         .then(function(response, headers){
             var mediaArray = response.data.data;

@@ -80,6 +80,18 @@
       controller: 'UserController',
       controllerAs:'users'
     })
+    .state('comments',{
+      url : '/comments', //ruta del url del estado
+      templateUrl : 'components/comments/comments.view.html',//vista que se va a cargar para este estado
+      // El resolve sirve para el controlador junto con la vista
+      resolve: {
+        load: ['$ocLazyLoad', function($ocLazyLoad){
+          return $ocLazyLoad.load('components/comments/comments.controller.js')
+        }]
+      },
+      controller: 'CommentsController',
+      controllerAs:'comments'
+    })
 
     $urlRouterProvider.otherwise('/login');
   }

@@ -52,12 +52,12 @@ router.delete('/deleteUser/:userId',function(req,res,next){
   });
 });
 
-router.put('/updateUser/:userId',function(req,res,next){  
-  User.updateUser(req.params.userId,req.body,function(err,count){ 
+router.put('/updateUser/',function(req,res,next){  
+  User.updateUser(req.body,function(err,count){ 
     if(err){
-      res.json({"state":{"stateMessage":"ERROR_USER_NO_DELETED","code":2003},"data":err});
+      res.json({"state":{"stateMessage":"ERROR_USER_NO_UPDATED","code":2003},"data":err});
     }else{
-      res.json({"state":{"stateMessage":"SUCCESS_USERS_FOUND","code":1000},"result":count});
+      res.json({"state":{"stateMessage":"SUCCESS_USERS_UPDATED","code":1002},"result":count});
     }
   });
 });

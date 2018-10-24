@@ -117,11 +117,11 @@
                     <h2 class="newsTitle">Estado y permisos</h2>
                 </div>
                 <div class="entryCheckbox">
-                    <input type="checkbox" ng-model="users.user.active" name="active">
+                    <input type="checkbox" ng-model="users.user.active" name="active" ng-true-value="1" ng-false-value="0">
                     <label for="active">Activo</label>
                 </div>
                 <div class="entryCheckbox">
-                    <input type="checkbox" ng-model="users.user.isAdmin" name="isAdmin">
+                    <input type="checkbox" ng-model="users.user.is_admin" name="isAdmin" ng-true-value="1" ng-false-value="0">
                     <label for="isAdmin">Administrador</label>
                 </div>
             </div>

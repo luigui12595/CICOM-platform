@@ -8,9 +8,9 @@
     function LoginController($http, $cookies, $location, $scope) {
       var vm = this;
       //LOCAL
-      //vm.server = 'http://localhost:8081';
+      vm.server = 'http://localhost:8081';
       //PROD
-      vm.server = 'http://cluster.cenat.ac.cr:8081';
+      // vm.server = 'http://cluster.cenat.ac.cr:8081';
       vm.currentUserActive = $cookies.getObject('currentUserActive');
       vm.token = '';
       vm.errorLogginIn = false;
@@ -80,14 +80,6 @@
           }
         })
       }
-      function cloneObject(object){
-        var clone = {};
-        for(var key in object){
-          if(object.hasOwnProperty(key))
-            clone[key] = object[key];
-        }
-        return clone;
-      };
     }
   })();
   

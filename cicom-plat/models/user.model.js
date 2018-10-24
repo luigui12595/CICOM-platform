@@ -8,7 +8,7 @@ var User={
     },
 
     getUserByEmail:function(email,callback){
-        return db.query("SELECT * FROM user WHERE email=?",[email],callback);
+        return db.query("SELECT * FROM user WHERE email=? AND active = 1",[email],callback);
     },
     
     getUserById:function(userId,callback){
@@ -24,7 +24,7 @@ var User={
     },
 
     updateUser:function(User,callback){
-        return db.query("UPDATE user SET fname=?, lname=?, email=?, modif_date=NOW(), active=?, is_admin=? WHERE userId=?",[User.fname,User.lname,User.email, User.modifDate, User.active, User.isAdmin, User.userId],callback);
+        return db.query("UPDATE user SET fname=?, lname=?, modif_date=NOW(), active=?, is_admin=? WHERE user_id=?",[User.fname,User.lname,User.active, User.is_admin, User.user_id],callback);
     }
 
 };

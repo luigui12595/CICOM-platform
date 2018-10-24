@@ -6,17 +6,16 @@
         <div class="titlePage">
             <h1>Subir archivos por medio</h1><br/>
         </div>
-        <div class="uploadAttributes">
+        <div class="uploadAttributes" ng-hide="files.documentType == ' '">
             <h2 >Medio:</h2>
-            <select id="mediaCombo" class="form-control" name="singleSelect" ng-model="files.mediaSelected"
-            ng-options="option as option.name for option in files.media" ng-value="option.facebook_name" ></select>
+            <label id=documentType>{{files.mediaSelected}}</label>
         </div>
         <div class="uploadAttributes" ng-hide="files.documentType == ' '">
             <h2 >Tipo de Datos:</h2>
             <label id="documentType"> {{files.documentType}} </label>
         </div>
         <div class="uploadAttributes">
-            <input accept=".tab, .csv" ng-hide="files.mediaSelected == ' '||files.mediaSelected.name == 'Todos'" type="file" import-sheet-js="" multiple="true" />
+            <input accept=".tab, .csv" type="file" import-sheet-js="" multiple="true" />
         </div>
         <div class="box box-default">
             <code>

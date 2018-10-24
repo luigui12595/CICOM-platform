@@ -4,24 +4,28 @@
         <h3 class="sideNavTitle">MediaTIC CMS</h3>
     </div>
     <ul class="actionList">
-        <li class="barButton" id="news" ng-class="sidenav.setActive(0)" ng-click="sidenav.getOut(0)">
+        <li class="barButton" id="news" ng-click="sidenav.getOut(0)">
             <i class="fa fa-newspaper-o" aria-hidden="true"></i>
             <p class="titleItem">Noticias</p>
         </li>
+        <li class="barButton" id="comments" ng-click="sidenav.getOut(1)">
+            <i class="fa fa-comments-o" aria-hidden="true"></i>
+            <p class="titleItem">Comentarios</p>
+        </li>
         <!--
-        <li class="barButton" id="candidates" ng-class="sidenav.setActive(1)" ng-click="sidenav.getOut(1)">
+        <li class="barButton" id="candidates" ng-click="sidenav.getOut(1)">
             <i class="fa fa-handshake-o" aria-hidden="true"></i>
             <p class="titleItem">Candidatos Presidenciales</p>
         </li>-->
-        <li class="barButton" id="categories" ng-class="sidenav.setActive(2)" ng-click="sidenav.getOut(2)">
+        <li class="barButton" id="categories" ng-click="sidenav.getOut(2)">
             <i class="fa fa-pencil" aria-hidden="true"></i>
             <p class="titleItem">Temas y Categorías</p>
         </li>
-        <li class="barButton" id="files" ng-class="sidenav.setActive(3)" ng-click="sidenav.getOut(3)">
+        <li class="barButton" id="files" ng-click="sidenav.getOut(3)">
             <i class="fa fa-file" aria-hidden="true"></i>
             <p class="titleItem">Manejo de Archivos</p>
         </li>
-        <li ng-if="sidenav.userAccess" class="barButton" id="users" ng-class="sidenav.setActive(4)" ng-click="sidenav.getOut(4)">
+        <li ng-if="sidenav.userAccess" class="barButton" id="users" ng-click="sidenav.getOut(4)">
             <i class="fa fa-user" aria-hidden="true"></i>
             <p class="titleItem">Usuarios</p>
         </li>
