@@ -54,32 +54,30 @@
     function CommentsController($http, $cookies, $location, $filter, $scope, $log, $templateCache) {
       var vm = this;
       vm.showLoader = false;
-      vm.selectedNews = false;
-      vm.news;
+      vm.selectedComments = false;
+      vm.comment;
       //LOCAL
       vm.sqlServer = 'http://localhost:8081';
       vm.mongoServer = 'http://localhost:8082';
       //PROD
       // vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
       // vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
-      vm.newsIndex;
+      vm.commentIndex;
       vm.subjects;
-      vm.mediaSelected = "Todos";
+      vm.mediaSelected = "0";
+      vm.searchWords = "";
       vm.sinceDate;
       vm.untilDate;
+      vm.searchInPost = false;
       vm.keysArray;
       vm.originalCommentsArray;
       vm.currentUserActive;
-      vm.commentKeysArray;
-      vm.newsCreationDate;
-      vm.newsUpdateDate;
-      vm.newsArray;
+      vm.commentsArray;
       vm.sortType     = 'created_time'; // set the default sort type
       vm.sortReverse  = false;  // set the default sort order
-      vm.searchNews   = '';  //Filter news
+      vm.searchComments   = '';  //Filter news
       vm.commentSortType = 'comment_position';
       vm.commentSortReverse = false;
-      vm.searchComments = '';
       vm.media;
       vm.filteredData;
   
@@ -96,21 +94,59 @@
       }
 
       $scope.$watch(function() {
-        return vm.searchNews;
+        return vm.searchComments;
       }, function(current, original) {
         if(current == '' || /^\s+$/.test(current)){
-          vm.filteredData = vm.newsArray;
+          vm.filteredData = vm.commentsArray;
         }else{
-          vm.filteredData = $filter("filter")(vm.newsArray, current)
+          vm.filteredData = $filter("filter")(vm.commentsArray, current)
         }
       });
       
   
-      vm.selectNews = function(newsChoice){
+      vm.selectComments = function(commentChoice){
         vm.showLoader = true;
-        vm.news = newsChoice;
-        vm.newsIndex = vm.newsArray.indexOf(newsChoice);
-        vm.selectedNews = true;
+        vm.comment = commentChoice;
+        vm.commentIndex = vm.commentsArray.indexOf(commentChoice);
+        vm.selectedComments = true;
+        vm.showLoader = false;
+      };
+  
+  
+      // vm.saveNews = function(){
+      //   vm.showLoader = true;
+      //   vm.commentsArray[vm.commentIndex] = vm.comment ;
+      //   delete vm.commentsArray[vm.commentIndex].commentArray;
+      //   var url_req = vm.mongoServer+'/updatePost';
+      //   var config = {
+      //     headers : {
+      //         'Content-Type': 'application/json'
+      //     }
+      //   }
+      //   $http.put(url_req,vm.news, config.headers)
+      //        .then(function(response,headers){
+      //         var results = response.data;
+      //         if(results.matched == 1){
+      //           alert('Post actualizado exitosamente')
+      //           vm.selectedComments = false;
+      //         }else{
+      //           alert('Post no tuvo cambios')
+      //           vm.selectedComments = false;
+      //         }
+      //         vm.showLoader = false;
+      //   }).then(function (obj) {
+      //     vm.showLoader = false;
+      // });
+      // };
+
+      vm.return = function(){
+        delete vm.commentsArray[vm.commentIndex].commentArray;
+        vm.selectedComments = false;
+      }
+      
+      vm.findComments = function(){
+        vm.showLoader = true;
+        var params = {}
         var url_req = vm.mongoServer+'/getComments';
         var config = {
           headers : {
@@ -118,120 +154,68 @@
               'Accept': 'application/json'
           }
         }
-        $http({url: url_req, method: 'GET', params:{"post_id":vm.news.post_id}}).
-          then(function(response) {
-            var commentsArray = response.data;
-            vm.originalCommentsArray = commentsArray;
-            var resultArray = [];
-            var responseComments = [];
-            for (var i = 0; i < commentsArray.length; i++){
-              if(commentsArray[i].is_reply == 0){
-                if(responseComments.length>0){
-                  commentsArray[i].commentsResponse=responseComments;
-                  responseComments = [];
-                }else{
-                  commentsArray[i].commentsResponse=[];
+        if(((vm.searchWords != undefined && vm.searchWords != "")|| (vm.sinceDate && vm.untilDate))){
+          if(vm.mediaSelected != "0"){
+            params.medio = vm.mediaSelected;
+          }
+          var since_date = new Date(vm.sinceDate); // some mock date
+          var until_date = new Date(vm.untilDate);
+          var since_secs = (since_date.getTime())/1000;
+          var until_secs = (until_date.getTime())/1000;
+          if(since_secs > until_secs && since_secs && until_secs){
+            alert("La fecha inicial debe de ser anterior a la fecha final");
+            return;
+          }
+          if(since_secs){
+            params.finicio = Math.trunc(since_secs);
+          }
+          if(until_secs){
+            params.ffinal = Math.trunc(until_secs);
+          }
+          if(vm.searchWords != ""){
+            params.text = vm.searchWords
+          }
+          if(vm.searchInPost){
+            params.posts = true
+          }else{
+            params.posts = false
+          }
+          $http({url: url_req, method: 'GET', params:params})
+            .then(function(response, headers){
+              vm.commentsArray = response.data;
+              if(vm.commentsArray.length > 0){
+                vm.keysArray = Object.keys(vm.commentsArray[0]);
+                var commentsArray = response.data;
+                vm.originalCommentsArray = commentsArray;
+                var resultArray = [];
+                var responseComments = [];
+                for (var i = 0; i < commentsArray.length; i++){
+                  if(commentsArray[i].is_reply == 0){
+                    if(responseComments.length>0){
+                      commentsArray[i].commentsResponse=responseComments;
+                      responseComments = [];
+                    }else{
+                      commentsArray[i].commentsResponse=[];
+                    }
+                    resultArray.push(commentsArray[i]);
+                  }else{
+                    responseComments.push(commentsArray[i]);
+                  }
                 }
-                resultArray.push(commentsArray[i]);
+                for (var i = 0; i < resultArray.length; i++){
+                  resultArray[i].comment_count = resultArray[i].commentsResponse.length;
+                }
+                vm.commentsArray = resultArray;
+                vm.showLoader = false;
               }else{
-                responseComments.push(commentsArray[i]);
+                vm.showLoader = false;
+                alert('No se encontraron comentarios asociados a posts que contengan las palabras claves');
               }
-            }
-            for (var i = 0; i < resultArray.length; i++){
-              resultArray[i].comment_count = resultArray[i].commentsResponse.length;
-            }
-            vm.news.commentArray = resultArray;
-            vm.commentKeysArray = Object.keys(vm.originalCommentsArray[0]);
-            vm.showLoader = false;
-          }, function(response) {
-            console.log(response);
-            vm.showLoader = false;
-        });
-      };
-  
-  
-      vm.saveNews = function(){
-        vm.showLoader = true;
-        vm.newsArray[vm.newsIndex] = vm.news ;
-        delete vm.newsArray[vm.newsIndex].commentArray;
-        var url_req = vm.mongoServer+'/updatePost';
-        var config = {
-          headers : {
-              'Content-Type': 'application/json'
-          }
-        }
-        $http.put(url_req,vm.news, config.headers)
-             .then(function(response,headers){
-              var results = response.data;
-              if(results.matched == 1){
-                alert('Post actualizado exitosamente')
-                vm.selectedNews = false;
-              }else{
-                alert('Post no tuvo cambios')
-                vm.selectedNews = false;
-              }
-              vm.showLoader = false;
-        }).then(function (obj) {
-          vm.showLoader = false;
-      });
-      };
-      vm.return = function(){
-        delete vm.newsArray[vm.newsIndex].commentArray;
-        vm.selectedNews = false;
-      }
-      
-      vm.findNews = function(){
-        vm.showLoader = true;
-        if(!vm.sinceDate || !vm.untilDate){
-          alert("Es necesario introducir un rango de fechas");
-          vm.showLoader = false;
-          return;
-        }
-        var since_date = new Date(vm.sinceDate); // some mock date
-        var until_date = new Date(vm.untilDate);
-        var since_secs = (since_date.getTime())/1000;
-        var until_secs = (until_date.getTime())/1000;
-        if(since_secs > until_secs){
-          alert("La fecha inicial debe de ser anterior a la fecha final");
-          return;
-        }
-        if(vm.mediaSelected == "Todos"){
-          var url_req = vm.mongoServer+'/getPosts';
-          var config = {
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-          }
-          $http({url: url_req, method: 'GET', params:{"finicio":since_secs, "ffinal":until_secs}})
-          .then(function(response, headers){
-            vm.newsArray = response.data;
-            if(vm.newsArray.length > 0){
-              vm.keysArray = Object.keys(vm.newsArray[0]);
-            }else{
-              alert('No se encontraron posts del medio buscado en las fechas requeridas');
-            }
-            vm.showLoader = false;
-          })
+            }) 
         }else{
-          var url_req = vm.mongoServer+'/getPosts';
-          var config = {
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-          }
-          $http({url: url_req, method: 'GET', params:{"medio":vm.mediaSelected,"finicio":since_secs, "ffinal":until_secs}})
-          .then(function(response, headers){
-            vm.newsArray = response.data;
-            if(vm.newsArray.length > 0){
-              vm.keysArray = Object.keys(vm.newsArray[0]);
-            }else{
-              alert('No se encontraron posts del medio buscado en las fechas requeridas');
-            }
-            vm.showLoader = false;
-          })
-        } 
+          vm.showLoader = false;
+          alert('La búsqueda debe de contener palabras clave o un rango de fechas');
+        }
       }
      
   

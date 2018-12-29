@@ -4,7 +4,7 @@ var md5 = require('md5');
 var User={
 
     getAllUsers:function(callback){
-        return db.query("SELECT * FROM user WHERE active = 1",callback);
+        return db.query("SELECT * FROM user",callback);
     },
 
     getUserByEmail:function(email,callback){

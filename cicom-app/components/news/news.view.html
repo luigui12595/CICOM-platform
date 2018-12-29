@@ -14,6 +14,21 @@
             <input class="borderbox"type="date" datetime="yyyy-MM-dd HH:mm:ss" ng-model="news.sinceDate"/>
             <h2 >Fecha final</h2>
             <input class="borderbox" type="date" datetime="yyyy-MM-dd HH:mm:ss" ng-model="news.untilDate"/>
+        </div>
+        <div class="newsSearch">
+            <h2 >Interés</h2>
+            <select name="singleSelect" ng-model="news.searchInterest">
+                <option value="">-- seleccionar --</option>
+                <option value="Público">Público</option>
+                <option value="No Público">No Público</option>
+            </select>
+            <h2 class="newsTitle">Tema</h2>
+            <select name="singleSelect" ng-model="news.searchSubject"
+            ng-options="subject.name as subject.name for subject in news.subjects" ng-value="subject.name" >
+                <option value="">-- seleccionar --</option>
+            </select>
+            <h2>Palabras claves</h2>
+            <input class="borderbox" type="text" ng-model="news.searchWords"/>
             <button class="btn btn-primary" type="button" ng-click="news.findNews()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>   
         </div>
         <table class="table table-striped table-hover table-bordered table-responsive" >
@@ -96,7 +111,7 @@
         <div class="firstCol">
             <div class="entry">
                 <h2 class="newsTitle">Título</h2><br/>
-                <textarea class="form-control" rows='3' ng-model="news.news.post_message" readonly></textarea>
+                <textarea class="form-control" rows='3' ng-model="news.news.post_message"></textarea>
             </div>
             <div class="entry">
                 <h2 class="newsTitle">Fecha de Publicación</h2><br/>
@@ -144,11 +159,15 @@
                 <h2 class="newsTitle">Tono</h2><br/>
                 <select name="singleSelect" ng-model="news.news.framing">
                         <option value="">-- seleccionar tono --</option>
-                        <option value="Polémico">Polémico</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Informativo">Informativo</option>
+                        <option value="Ataque">Ataque</option>
                         <option value="Denuncia">Denuncia</option>
+                        <option value="Humor">Humor</option>
+                        <option value="Informativo">Informativo</option>
                         <option value="Invitación">Invitación</option>
+                        <option value="Militante">Militante</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Polémico">Polémico</option>
+                        <option value="Propositivo">Propositivo</option>
                     </select>
             </div>
             <div class="entry">
@@ -160,11 +179,14 @@
                     <h2>Formato</h2><br/>
                     <select name="singleSelect" ng-model="news.news.format">
                         <option value="">-- seleccionar Género --</option>
-                        <option value="Noticia">Noticia</option>
-                        <option value="Opinión">Opinión</option>
+                        <option value="Blog">Blog</option>
+                        <option value="Crónica">Crónica</option>
                         <option value="Editorial">Editorial</option>
                         <option value="Entrevista">Entrevista</option>
-                        <option value="Blog">Blog</option>
+                        <option value="Noticia">Noticia</option>
+                        <option value="Opinión">Opinión</option>
+                        <option value="Publicidad">Publicidad</option>
+                        <option value="Reportaje">Reportaje</option>
                     </select>
                 </div>
                 <div class="entryDivision">
@@ -184,6 +206,38 @@
                     <div class="entryEngDivision">
                             <h2 class="newsTitle">Compartido</h2><br/>
                             <input id="numberCount" type="number" ng-model="news.news.shares_count_fb" readonly/>
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Reacciones</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.reactions_count_fb" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Likes</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.likes_count_fb" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Angry</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_ANGRY" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Haha</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_HAHA" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Wow</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_WOW" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Sad</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_SAD" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Love</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_LOVE" />
+                    </div>
+                    <div class="entryEngDivision">
+                        <h2 class="newsTitle">Thankful</h2><br/>
+                        <input id="numberCount" type="number" ng-model="news.news.rea_THANKFUL" />
                     </div>
                     <div class="entryEngDivision">
                         <h2 class="newsTitle">Engagement</h2><br/>

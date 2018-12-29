@@ -68,6 +68,9 @@
     vm.mediaSelected = "0";
     vm.sinceDate;
     vm.untilDate;
+    vm.searchInterest="";
+    vm.searchSubject="";
+    vm.searchWords="";
     vm.keysArray;
     vm.originalCommentsArray;
     vm.commentKeysArray;
@@ -119,7 +122,7 @@
             'Accept': 'application/json'
         }
       }
-      $http({url: url_req, method: 'GET', params:{"post_id":vm.news.post_id}}).
+      $http({url: url_req, method: 'GET', params:{"post_id":vm.news.post_id, "by_post":"true"}}).
         then(function(response) {
           var commentsArray = response.data;
           vm.originalCommentsArray = commentsArray;
@@ -190,12 +193,9 @@
       var until_date = new Date(vm.untilDate);
       var since_secs = (since_date.getTime())/1000;
       var until_secs = (until_date.getTime())/1000;
-      if(since_secs > until_secs){
+      if(since_secs > until_secs && since_secs && until_secs){
         alert("La fecha inicial debe de ser anterior a la fecha final");
         return;
-      }
-      if(!since_secs & !until_secs){
-        alert("Al no insertar fechas el proceso puede durar algunos minutos");
       }
       var url_req = vm.mongoServer+'/getPosts';
       var paramsBody = {};
@@ -203,10 +203,19 @@
         paramsBody.medio = vm.mediaSelected;
       }
       if(since_secs){
-        paramsBody.finicio = since_secs;
+        paramsBody.finicio = Math.trunc(since_secs);
       }
       if(until_secs){
-        paramsBody.ffinal = until_secs;
+        paramsBody.ffinal = Math.trunc(until_secs);
+      }
+      if(vm.searchInterest != ""){
+        paramsBody.interes = vm.searchInterest
+      }
+      if(vm.searchWords != ""){
+        paramsBody.text = vm.searchWords
+      }
+      if(vm.searchSubject != ""){
+        paramsBody.subject = vm.searchSubject
       }
       $http({url: url_req, method: 'GET', params:paramsBody})
         .then(function(response, headers){
@@ -223,9 +232,11 @@
 
     function init(){
       vm.currentUserActive = $cookies.getObject('currentUserActive');
-        if(vm.currentUserActive == null){
-          $location.path('/login');
-        }
+      vm.sinceDate = new Date();
+      vm.untilDate = new Date();
+      if(vm.currentUserActive == null){
+        $location.path('/login');
+      }
       $http.get(vm.sqlServer+'/Media/getMedia')
       .then(function(response, headers){
         vm.media = response.data.data;

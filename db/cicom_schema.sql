@@ -45,11 +45,20 @@ CREATE TABLE IF NOT EXISTS cicom.log
   FOREIGN KEY (session_token) REFERENCES cicom.session_control(session_token)
 );
 
-CREATE TABLE IF NOT EXISTS cicom.subject
+CREATE TABLE IF NOT EXISTS cicom.category
 (
-  subject_id integer auto_increment,
-  name varchar(100),
-  PRIMARY KEY (subject_id)
+  category_id integer auto_increment,
+  category_name varchar(100),
+  PRIMARY KEY (category_id)
+);
+
+CREATE TABLE IF NOT EXISTS cicom.sub_category
+(
+  category_id integer,
+  sub_category_id integer auto_increment,
+  sub_category_name varchar(100),
+  PRIMARY KEY (category_id, sub_category_id)
+  FOREIGN KEY (category_id) REFERENCES cicom.category(category_id)
 );
 
 CREATE TABLE IF NOT EXISTS cicom.media
