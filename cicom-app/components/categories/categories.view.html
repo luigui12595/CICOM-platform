@@ -2,21 +2,37 @@
 </div>
 <div class="categoryView" id="myApp">
     <div class="categoryPanel">
-        <h1 class="titlePage">Temas</h1>
+        <h1 class="titlePage">Categorías</h1>
         <div class="framingList">
-            <select class="selectpicker" data-live-search="true" size="4" name="ngvalueselect" ng-model="categories.framingSelected" multiple>
-                <option ng-repeat="option in categories.framingArray" ng-value="option">{{option.name}}</option>
+            <select class="selectpicker" data-live-search="true" size="4" name="ngvalueselect" ng-model="categories.categorySelected" multiple>
+                <option ng-repeat="option in categories.categoryArray" ng-value="option">{{option.category_name}}</option>
             </select>
         </div>
         <div class="crudFraming">
-            <input type="text" ng-model="categories.framingSelected[0].name"/>
+            <input type="text" ng-model="categories.categorySelected[0].category_name"/>
             <div class="crudButtons">
-                <button class="noStyle" ng-click="categories.cancelFraming()"><i class="fa fa-times" title="cancelar" id="cancelButton"  aria-hidden="true"></i></button>
-                <button class="noStyle" ng-click="categories.deleteFraming()"><i class="fa fa-trash" id="deleteButton" title="borrar" aria-hidden="true"></i></button>
-                <button class="noStyle" ng-click="categories.saveFraming()"><i class="fa fa-check" id="saveButton" title="guardar" aria-hidden="true"></i></button>
+                <button class="noStyle" ng-click="categories.cancelCategory()"><i class="fa fa-times" title="cancelar" id="cancelButton"  aria-hidden="true"></i></button>
+                <button class="noStyle" ng-click="categories.deleteCategory()"><i class="fa fa-trash" id="deleteButton" title="borrar" aria-hidden="true"></i></button>
+                <button class="noStyle" ng-click="categories.saveCategory()"><i class="fa fa-check" id="saveButton" title="guardar" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
+    <div class="categoryPanel">
+            <h1 class="titlePage">Subategorías</h1>
+            <div class="framingList">
+                <select class="selectpicker" data-live-search="true" size="4" name="ngvalueselect" ng-model="categories.subcategorySelected" multiple>
+                    <option ng-repeat="option in categories.categorySelected[0].sub_categories" ng-value="option">{{option.sub_category_name}}</option>
+                </select>
+            </div>
+            <div class="crudFraming">
+                <input type="text" ng-model="categories.subcategorySelected[0].sub_category_name"/>
+                <div class="crudButtons">
+                    <button class="noStyle" ng-click="categories.cancelSubCategory()"><i class="fa fa-times" title="cancelar" id="cancelButton"  aria-hidden="true"></i></button>
+                    <button class="noStyle" ng-click="categories.deleteSubCategory()"><i class="fa fa-trash" id="deleteButton" title="borrar" aria-hidden="true"></i></button>
+                    <button class="noStyle" ng-click="categories.saveSubCategory()"><i class="fa fa-check" id="saveButton" title="guardar" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
     <!--
     <div class="categoryPanel">
         <h1 class="titlePage">Candidatos</h1>

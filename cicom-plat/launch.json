@@ -14,12 +14,6 @@
                 "debug"
             ],
             "port": 8081
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${file}"
         }
     ]
 }

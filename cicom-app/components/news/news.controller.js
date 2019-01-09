@@ -241,7 +241,7 @@
       .then(function(response, headers){
         vm.media = response.data.data;
       })
-      $http.get(vm.sqlServer+'/subjects/getSubjects/')
+      $http.get(vm.sqlServer+'/category/getCategory/')
       .then(function(response, headers){
         vm.subjects = response.data.data;
       })

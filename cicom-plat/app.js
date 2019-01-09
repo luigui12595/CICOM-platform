@@ -13,7 +13,7 @@ var sessions = require('./routes/session.js');
 var candidates = require('./routes/candidate.js');
 var media = require('./routes/media.js');
 var sections = require('./routes/section.js');
-var subjects = require('./routes/subjects.js');
+var categories = require('./routes/category.js');
 
 var app = express();
 
@@ -45,7 +45,7 @@ app.use('/sessions', sessions);
 app.use('/candidates', candidates);
 app.use('/media', media);
 app.use('/sections', sections);
-app.use('/subjects', subjects);
+app.use('/category', categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

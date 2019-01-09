@@ -17,14 +17,14 @@
         </div>
         <div class="newsSearch">
             <h2 >Interés</h2>
-            <select name="singleSelect" ng-model="news.searchInterest">
+            <select class="form-control" name="singleSelect" ng-model="news.searchInterest">
                 <option value="">-- seleccionar --</option>
                 <option value="Público">Público</option>
                 <option value="No Público">No Público</option>
             </select>
             <h2 class="newsTitle">Tema</h2>
-            <select name="singleSelect" ng-model="news.searchSubject"
-            ng-options="subject.name as subject.name for subject in news.subjects" ng-value="subject.name" >
+            <select class="form-control" name="singleSelect" ng-model="news.searchSubject"
+            ng-options="subject.category_name as subject.category_name for subject in news.subjects" ng-value="subject.name" >
                 <option value="">-- seleccionar --</option>
             </select>
             <h2>Palabras claves</h2>

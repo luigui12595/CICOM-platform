@@ -53,8 +53,9 @@
                       'Accept':'application/json'
                     }
       vm.candidateArray;
-      vm.framingArray;
-      vm.framingSelected=[];
+      vm.categoryArray;
+      vm.categorySelected=[];
+      vm.subcategorySelected=[];
       vm.candidateSelected=[];
       vm.currentUserActive;
       function init(){
@@ -66,89 +67,135 @@
           .then(function(response, headers){
             vm.candidateArray = response.data.data;
           })
-          $http.get(vm.server+'/subjects/getSubjects')
+          $http.get(vm.server+'/category/getCategory')
           .then(function(response, headers){
-            vm.framingArray = response.data.data;
+            vm.categoryArray = response.data.data;
           })
       }init();
 
       
-      vm.deleteFraming =function (){
-        if(vm.framingSelected != []){
-          if(!vm.framingSelected[0].subject_id){
-            alert("No se puede eliminar un tono sin guardar");
+      vm.deleteCategory =function (){
+        if(vm.categorySelected != []){
+          if(!vm.categorySelected[0].category_id){
+            alert("No se puede eliminar una categoría sin guardar");
           }else{
-            var elemId = vm.framingSelected[0].subject_id;
-            var objectToDelete = { 
-              "subject_id":elemId
-            }
-            $http.post(vm.server+'/subjects/deleteSubject', objectToDelete )
+            $http.post(vm.server+'/category/deleteCategory', vm.categorySelected[0] )
             .then(function(response, headers){
               if(response.data.state.code<2000){
-                $http.get(vm.server+'/subjects/getSubjects')
+                $http.get(vm.server+'/category/getCategory')
                 .then(function(response, headers){
-                  vm.framingArray = response.data.data;
+                  vm.categoryArray = response.data.data;
                   alert("Tono eliminado");
                 })
               }else{
-                alert("Ocurrió un error al eliminar el tono, inténtelo de nuevo");
+                alert("Ocurrió un error al eliminar la categoría, inténtelo de nuevo");
               }
             }) 
           }
         }else{
-          alert("No se ha seleccionado un tono");
+          alert("No se ha seleccionado una categoría");
         }
       }
 
-      vm.saveFraming =function (){
-        if(vm.framingSelected != []){
-          if(!vm.framingSelected[0].subject_id){
-            var elemName = vm.framingSelected[0].name;
-            var objectToCreate = { 
-              "name":elemName
-            }
-            //HTTP FUNCTION crear tono 
-            $http.post(vm.server+'/subjects/createSubject', objectToCreate)
+      vm.deleteSubCategory =function (){
+        if(vm.subcategorySelected != []){
+          if(!vm.subcategorySelected[0].category_id || !vm.subcategorySelected[0].sub_category_id){
+            alert("No se puede eliminar una subcategoría sin guardar");
+          }else{
+            $http.post(vm.server+'/category/deleteSubCategory', vm.subcategorySelected[0] )
             .then(function(response, headers){
               if(response.data.state.code<2000){
-                $http.get(vm.server+'/subjects/getSubjects')
+                $http.get(vm.server+'/category/getCategory')
                 .then(function(response, headers){
-                  vm.framingArray = response.data.data;
-                  alert("Tono creado");
-                  vm.framingSelected = [];
+                  vm.categoryArray = response.data.data;
+                  alert("Subcategoría eliminada");
                 })
               }else{
-                alert("Ocurrió un error al crear el tono, inténtelo de nuevo");
+                alert("Ocurrió un error al eliminar la subcategoría, inténtelo de nuevo");
+              }
+            }) 
+          }
+        }else{
+          alert("No se ha seleccionado una subcategoría");
+        }
+      }
+
+      vm.saveCategory = function (){
+        if(vm.categorySelected.length >0){
+          if(!vm.categorySelected[0].category_id){
+            //HTTP FUNCTION crear tono 
+            $http.post(vm.server+'/category/createCategory', vm.categorySelected[0])
+            .then(function(response, headers){
+              if(response.data.state.code<2000){
+                $http.get(vm.server+'/category/getCategory')
+                .then(function(response, headers){
+                  vm.categoryArray = response.data.data;
+                  alert("Tono creado");
+                })
+              }else{
+                alert("Ocurrió un error al crear la categoría, inténtelo de nuevo");
               }
             })
           }else{
-            var elemName = vm.framingSelected[0].name;
-            var elemId = vm.framingSelected[0].subject_id;
-            var objectToCreate = { 
-              "name":elemName,
-              "subjectId":elemId
-            }
-            $http.put(vm.server+'/subjects/updateSubject', objectToCreate)
+            $http.put(vm.server+'/category/updateCategory', vm.categorySelected[0])
             .then(function(response, headers){
               if(response.data.state.code<2000){
-                $http.get(vm.server+'/subjects/getSubjects')
+                $http.get(vm.server+'/category/getCategory')
                 .then(function(response, headers){
-                  vm.framingArray = response.data.data;
+                  vm.categoryArray = response.data.data;
                   alert("Tono actualizado");
-                  vm.framingSelected = [];
                 })
               }else{
-                alert("Ocurrió un error al actualizar el tono, inténtelo de nuevo");
+                alert("Ocurrió un error al actualizar la categoría, inténtelo de nuevo");
               }
             }) 
           }
         }else{
-          alert("No se ha seleccionado un tono");
+          alert("No se ha seleccionado la categoría");
         }
       }
 
-      vm.cancelFraming = function(){
-        vm.framingSelected = [];
+      vm.saveSubCategory = function (){
+        if(vm.subcategorySelected.length >0){
+          if(!vm.subcategorySelected[0].sub_category_id){
+            vm.subcategorySelected[0].category_id = vm.categorySelected[0].category_id;
+            $http.post(vm.server+'/category/createSubcategory', vm.subcategorySelected[0])
+            .then(function(response, headers){
+              if(response.data.state.code<2000){
+                $http.get(vm.server+'/category/getCategory')
+                .then(function(response, headers){
+                  vm.categoryArray = response.data.data;
+                  alert("Subcategoría creada");
+                })
+              }else{
+                alert("Ocurrió un error al crear la categoría, inténtelo de nuevo");
+              }
+            })
+          }else{
+            $http.put(vm.server+'/category/updateSubcategory', vm.subcategorySelected[0])
+            .then(function(response, headers){
+              if(response.data.state.code<2000){
+                $http.get(vm.server+'/category/getCategory')
+                .then(function(response, headers){
+                  vm.categoryArray = response.data.data;
+                  alert("Subcategoría actualizada");
+                })
+              }else{
+                alert("Ocurrió un error al actualizar la categoría, inténtelo de nuevo");
+              }
+            }) 
+          }
+        }else{
+          alert("No se ha seleccionado la categoría");
+        }
+      }
+
+      vm.cancelCategory = function(){
+        vm.categorySelected = [];
+      }
+
+      vm.cancelSubCategory = function(){
+        vm.subcategorySelected = [];
       }
 
       vm.deleteCandidate =function (){

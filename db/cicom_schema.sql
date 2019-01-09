@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS cicom.sub_category
   category_id integer,
   sub_category_id integer auto_increment,
   sub_category_name varchar(100),
-  PRIMARY KEY (category_id, sub_category_id)
+  PRIMARY KEY (sub_category_id, category_id),
   FOREIGN KEY (category_id) REFERENCES cicom.category(category_id)
 );
 
