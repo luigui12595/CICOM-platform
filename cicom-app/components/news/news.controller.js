@@ -64,7 +64,9 @@
     // vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
     // vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
     vm.newsIndex;
-    vm.subjects;
+    vm.categoryArray;
+    vm.categorySelected={};
+    vm.subcategorySelected={};
     vm.mediaSelected = "0";
     vm.sinceDate;
     vm.untilDate;
@@ -148,6 +150,12 @@
           if(!vm.originalCommentsArray === undefined||vm.originalCommentsArray.length>0){
             vm.commentKeysArray = Object.keys(vm.originalCommentsArray[0]);
           }
+          if(vm.news.category){
+            vm.categorySelected.category_name = vm.news.category
+          }
+          if(vm.news.subcategory){
+            vm.subcategorySelected.sub_category_name = vm.news.subcategory
+          }
           vm.showLoader = false;
         }, function(response) {
           console.log(response);
@@ -158,15 +166,20 @@
 
     vm.saveNews = function(){
       vm.showLoader = true;
-      vm.newsArray[vm.newsIndex] = vm.news ;
-      delete vm.newsArray[vm.newsIndex].commentArray;
-      var url_req = vm.mongoServer+'/updatePost';
-      var config = {
-        headers : {
-            'Content-Type': 'application/json'
-        }
+      // [vm.newsArray[vm.newsIndex] = vm.news ;
+      // delete vm.newsArray[vm.newsIndex].commentArray;
+      delete vm.news.commentArray;
+      if(!angular.equals(vm.categorySelected, {})){
+        vm.news.category = vm.categorySelected.category_name  
       }
-      $http.put(url_req,vm.news, config.headers)
+      if(!angular.equals(vm.subcategorySelected, {})){
+        vm.news.subcategory = vm.subcategorySelected.sub_category_name
+      }
+      var headers = {
+            'Content-Type': 'text/plain'
+      }
+      
+      $http.put(vm.mongoServer+'/updatePost', vm.news, headers)
            .then(function(response,headers){
             var results = response.data;
             if(results.matched == 1){
@@ -243,7 +256,7 @@
       })
       $http.get(vm.sqlServer+'/category/getCategory/')
       .then(function(response, headers){
-        vm.subjects = response.data.data;
+        vm.categoryArray = response.data.data;
       })
     }init();
   }
