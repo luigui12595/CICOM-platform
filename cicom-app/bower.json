@@ -27,5 +27,8 @@
     "angular-animate": "^1.5.7",
     "angular-sanitize": "^1.6.8",
     "ng-file-model": "*"
+  },
+  "resolutions": {
+    "angular": "1.7.5"
   }
 }
