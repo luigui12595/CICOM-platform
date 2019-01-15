@@ -24,7 +24,7 @@
             </select>
             <h2 class="newsTitle">Tema</h2>
             <select class="form-control" name="singleSelect" ng-model="news.searchSubject"
-            ng-options="subject.category_name as subject.category_name for subject in news.subjects" ng-value="subject.name" >
+            ng-options="category.category_name for category in news.categoryArray" ng-value="category.name" >
                 <option value="">-- seleccionar --</option>
             </select>
             <h2>Palabras claves</h2>
@@ -126,9 +126,14 @@
                 <textarea class="form-control" rows='3' contenteditable='true' ng-model="news.news.description" ></textarea>
             </div>
             <div class="entry">
-                <h2 class="newsTitle">Tema</h2><br/>
-                <select name="singleSelect" ng-model="news.news.subject"
-                ng-options="subject.name as subject.name for subject in news.subjects" ng-value="subject.name" ></select>
+                <h2 class="newsTitle">Categoría</h2><br/>
+                <select name="singleSelect" ng-model="news.categorySelected"
+                ng-options="category.category_name for category in news.categoryArray" ng-value="category" ></select>
+            </div>
+            <div class="entry">
+                <h2 class="newsTitle">Subcategoría</h2><br/>
+                <select name="singleSelect" ng-model="news.subcategorySelected"
+                ng-options="subcategory.sub_category_name for subcategory in news.categorySelected.sub_categories" ng-value="subcategory" ></select>
             </div>
             <div class="entryCheckbox">
                 <input type="checkbox" ng-checked="news.news.isCampaign" name="ossm">
