@@ -166,9 +166,8 @@
 
     vm.saveNews = function(){
       vm.showLoader = true;
-      // [vm.newsArray[vm.newsIndex] = vm.news ;
-      // delete vm.newsArray[vm.newsIndex].commentArray;
       delete vm.news.commentArray;
+      vm.newsArray[vm.newsIndex] = vm.news ;
       if(!angular.equals(vm.categorySelected, {})){
         vm.news.category = vm.categorySelected.category_name  
       }
@@ -176,7 +175,7 @@
         vm.news.subcategory = vm.subcategorySelected.sub_category_name
       }
       var headers = {
-            'Content-Type': 'text/plain'
+            'Content-Type': 'application/json'
       }
       
       $http.put(vm.mongoServer+'/updatePost', vm.news, headers)
