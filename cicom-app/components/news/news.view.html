@@ -136,7 +136,7 @@
                 ng-options="subcategory.sub_category_name for subcategory in news.categorySelected.sub_categories" ng-value="subcategory" ></select>
             </div>
             <div class="entryCheckbox">
-                <input type="checkbox" ng-checked="news.news.isCampaign" name="ossm">
+                <input type="checkbox" ng-model="news.news.isCampaign" ng-checked="news.news.isCampaign" name="ossm">
                 <label for="ossm">Campaña</label>
             </div>
         </div>

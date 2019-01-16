@@ -151,10 +151,22 @@
             vm.commentKeysArray = Object.keys(vm.originalCommentsArray[0]);
           }
           if(vm.news.category){
-            vm.categorySelected.category_name = vm.news.category
+            for (var i = 0; i < vm.categoryArray.length; i++) {
+              var cat = vm.categoryArray[i];
+              if(cat.category_name == vm.news.category){
+                vm.categorySelected = cat
+                break;
+              }
+            }
           }
           if(vm.news.subcategory){
-            vm.subcategorySelected.sub_category_name = vm.news.subcategory
+            for (var i = 0; i < vm.categorySelected.sub_categories.length; i++) {
+              var subcat = vm.categorySelected.sub_categories[i];
+              if(subcat.sub_category_name == vm.news.subcategory){
+                vm.subcategorySelected = subcat
+                break;
+              }
+            }
           }
           vm.showLoader = false;
         }, function(response) {
@@ -169,10 +181,18 @@
       delete vm.news.commentArray;
       vm.newsArray[vm.newsIndex] = vm.news ;
       if(!angular.equals(vm.categorySelected, {})){
-        vm.news.category = vm.categorySelected.category_name  
+        if(vm.categorySelected.hasOwnProperty("category_name")){
+          vm.news.category = vm.categorySelected.category_name 
+        }else{
+          vm.news.category = vm.categorySelected
+        }
       }
       if(!angular.equals(vm.subcategorySelected, {})){
-        vm.news.subcategory = vm.subcategorySelected.sub_category_name
+        if(vm.subcategorySelected.hasOwnProperty("sub_category_name")){
+          vm.news.subcategory = vm.subcategorySelected.sub_category_name 
+        }else{
+          vm.news.subcategory = vm.subcategorySelected
+        }
       }
       var headers = {
             'Content-Type': 'application/json'
