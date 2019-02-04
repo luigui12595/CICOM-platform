@@ -6,11 +6,19 @@ var mysql=require('mysql');
 //     password:'jicaros',
 //     database:'cicom'
 // });
-//LOCAL
-var connection=mysql.createPool({
+//LOCAL LJ
+/*var connection=mysql.createPool({
     host:'localhost',
     user:'root',
     password:'fofirocks',
+    database:'cicom'
+});
+*/
+//LOCAL Anita
+var connection=mysql.createPool({
+    host:'localhost',
+    user:'root',
+    password:'PezKoi2!',
     database:'cicom'
 });
 module.exports=connection;
