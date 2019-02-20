@@ -83,7 +83,7 @@
             <tbody>
                 <tr dir-paginate="n in comments.commentsArray | orderBy:comments.sortType:comments.sortReverse| filter:comments.searchComments| itemsPerPage:5" ng-click="comments.selectComments(n)">
                     <th >{{n.comment_message}}</th>
-                    <td >{{n.from.name}}</td>
+                    <td >{{n.name}}</td>
                     <td >{{n.post_text}}</td>
                     <td >{{n.comment_count}}</td>
                     <td >{{n.comment_like_count}}</td>

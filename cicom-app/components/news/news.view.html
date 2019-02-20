@@ -89,7 +89,7 @@
             <tbody>
                 <tr dir-paginate="n in news.newsArray | orderBy:news.sortType:news.sortReverse| filter:news.searchNews| itemsPerPage:5" ng-click="news.selectNews(n)">
                     <th >{{n.post_message}}</th>
-                    <td >{{n.from.name}}</td>
+                    <td >{{n.name}}</td>
                     <td >{{n.post_published_unix*1000|date:'medium': '+0600'}}</td>
                     <td >{{n.engagement_fb}}</td>
                     <td >{{n.subject}}</td>
