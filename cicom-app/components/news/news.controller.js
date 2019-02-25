@@ -150,7 +150,7 @@
           if(!vm.originalCommentsArray === undefined||vm.originalCommentsArray.length>0){
             vm.commentKeysArray = Object.keys(vm.originalCommentsArray[0]);
           }
-          if(vm.news.category != "N/A"){
+          if(vm.news.category){
             for (var i = 0; i < vm.categoryArray.length; i++) {
               var cat = vm.categoryArray[i];
               if(cat.category_name == vm.news.category){
@@ -159,13 +159,15 @@
               }
             }
           }
-          if(vm.news.subcategory != "N/A"){
-            for (var i = 0; i < vm.categorySelected.sub_categories.length; i++) {
-               var subcat = vm.categorySelected.sub_categories[i];
-               if(subcat.sub_category_name == vm.news.subcategory){
-                 vm.subcategorySelected = subcat
-                 break;
-               }
+          if(vm.news.subcategory){
+              if(vm.news.subcategory != "N/A"){
+              for (var i = 0; i < vm.categorySelected.sub_categories.length; i++) {
+                var subcat = vm.categorySelected.sub_categories[i];
+                if(subcat.sub_category_name == vm.news.subcategory){
+                  vm.subcategorySelected = subcat
+                  break;
+                }
+              }
             }
           }
           vm.showLoader = false;
