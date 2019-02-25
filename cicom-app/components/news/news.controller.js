@@ -58,11 +58,11 @@
     vm.selectedNews = false;
     vm.news;
     //LOCAL
-    //vm.sqlServer = 'http://localhost:8081';
-    //vm.mongoServer = 'http://localhost:8082';
+    vm.sqlServer = 'http://localhost:8081';
+    vm.mongoServer = 'http://localhost:8082';
     //PROD
-    vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
-    vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
+    //vm.sqlServer = 'http://cluster.cenat.ac.cr:8081';
+    //vm.mongoServer = 'http://cluster.cenat.ac.cr:8082';
     vm.newsIndex;
     vm.categoryArray;
     vm.categorySelected={};
@@ -108,8 +108,8 @@
       if(current == '' || /^\s+$/.test(current)){
         vm.filteredData = vm.newsArray;
       }else{
-        vm.filteredData = $filter("filter")(vm.newsArray, current)
-      }
+        vm.filteredData = $filter("filter")(vm.newsArray, current);
+       }
     });
     
     vm.selectNews = function(newsChoice){
@@ -160,11 +160,13 @@
             }
           }
           if(vm.news.subcategory){
-            for (var i = 0; i < vm.categorySelected.sub_categories.length; i++) {
-              var subcat = vm.categorySelected.sub_categories[i];
-              if(subcat.sub_category_name == vm.news.subcategory){
-                vm.subcategorySelected = subcat
-                break;
+            if(vm.news.subcategory != "N/A"){
+              for (var i = 0; i < vm.categorySelected.sub_categories.length; i++) {
+                var subcat = vm.categorySelected.sub_categories[i];
+                if(subcat.sub_category_name == vm.news.subcategory){
+                  vm.subcategorySelected = subcat
+                  break;
+                }
               }
             }
           }
@@ -251,16 +253,18 @@
       }
       $http({url: url_req, method: 'GET', params:paramsBody})
         .then(function(response, headers){
-          vm.newsArray = response.data;
+          var commentsArray = response.data;
+          vm.newsArray = commentsArray;
           if(vm.newsArray.length > 0){
             vm.keysArray = Object.keys(vm.newsArray[0]);
           }else{
             alert('No se encontraron posts del medio buscado en las fechas requeridas');
           }
           vm.showLoader = false;
-        }) 
-    }
-   
+        })
+      }
+    
+    
 
     function init(){
       vm.currentUserActive = $cookies.getObject('currentUserActive');
