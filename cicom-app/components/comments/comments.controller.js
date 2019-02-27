@@ -80,6 +80,7 @@
       vm.commentSortReverse = false;
       vm.media;
       vm.filteredData;
+      var originalComments;
   
       vm.expandAll = function(expanded) {
         $scope.$broadcast('onExpandAll', {
@@ -182,14 +183,21 @@
           }
           $http({url: url_req, method: 'GET', params:params})
             .then(function(response, headers){
+            vm.originalCommentsArray = response.data;
+            })
+          $http({url: url_req, method: 'GET', params:params})
+            .then(function(response, headers){              
               vm.commentsArray = response.data;
+              originalComments = response.data;
               if(vm.commentsArray.length > 0){
                 vm.keysArray = Object.keys(vm.commentsArray[0]);
                 var commentsArray = response.data;
-                vm.originalCommentsArray = commentsArray;
+                //vm.originalCommentsArray = response.data;
                 var resultArray = [];
                 var responseComments = [];
+                var allComments = [];
                 for (var i = 0; i < commentsArray.length; i++){
+                  allComments.push(commentsArray[i]);
                   if(commentsArray[i].is_reply == 0){
                     if(responseComments.length>0){
                       commentsArray[i].commentsResponse=responseComments;
@@ -206,12 +214,13 @@
                   resultArray[i].comment_count = resultArray[i].commentsResponse.length;
                 }
                 vm.commentsArray = resultArray;
+                vm.originalCommentsArray = allComments;
                 vm.showLoader = false;
               }else{
                 vm.showLoader = false;
                 alert('No se encontraron comentarios asociados a posts que contengan las palabras claves');
               }
-            }) 
+            })
         }else{
           vm.showLoader = false;
           alert('La búsqueda debe de contener palabras clave o un rango de fechas');
