@@ -98,9 +98,9 @@
         return vm.searchComments;
       }, function(current, original) {
         if(current == '' || /^\s+$/.test(current)){
-          vm.filteredData = vm.commentsArray;
+          vm.filteredData = originalComments;
         }else{
-          vm.filteredData = $filter("filter")(vm.commentsArray, current)
+          vm.filteredData = $filter("filter")(originalComments, current)
         }
       });
       
