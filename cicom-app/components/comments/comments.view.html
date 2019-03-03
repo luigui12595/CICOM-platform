@@ -105,7 +105,7 @@
             </div>
             <div class="entry">
                 <h2 class="newsTitle">Fecha de Publicación</h2><br/>
-                {{comments.comment.comment_published|date:'medium'}}
+                {{comments.comment.comment_published|date:'medium':'+0600'}}
             </div>
             <div class="entry">
                 <h2 class="newsTitle">Medio</h2><br/>
@@ -232,7 +232,7 @@
                                     <tbody>
                                         <tr dir-paginate="commentR in comments.comment.commentsResponse | orderBy:comment_position | itemsPerPage:5">
                                             <td>{{commentR.comment_message}}</td>
-                                            <td>{{commentR.comment_published|date:'medium'}}</td>
+                                            <td>{{commentR.comment_published|date:'medium': '+0600'}}</td>
                                             <td>{{commentR.comment_like_count}}</td>
                                         </tr>
                                     </tbody>
